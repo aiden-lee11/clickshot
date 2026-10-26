@@ -67,3 +67,7 @@ When the service is connected to GitHub with automatic deployments enabled, push
 To enable automatic deployments later, grant the Railway GitHub app access to this repository, connect the service to `aiden-lee11/clickshot` on `main`, and set the GitHub service Root Directory to `/demo` with config path `/demo/railway.json`. Do not use the folder-as-root CLI upload after setting that GitHub root directory.
 
 Reference: [Railway monorepo settings](https://docs.railway.com/deployments/monorepo) and [GitHub automatic deployments](https://docs.railway.com/deployments/github-autodeploys).
+
+## Prototype CAD
+
+Open `/cad/` for the CAD-mesh viewer, exported STEP assembly, print-oriented STLs and source ZIP. The generator and editable dimensions live in `cad/generate.py` and `cad/parameters.json`. Read `cad/README.md` before fabrication. The CAD is a fit draft of the printed mount, with an external pitch linkage and optional replacement sleeves, while both presentation concepts remain preserved. Its provisional hardware schedule differs from the original concept shopping list; existing shopping totals are not quotes for the CAD revision.

@@ -1,0 +1,1122 @@
+{
+  "status": "PROTOTYPE FIT DRAFT \u2014 measure hardware and blaster before fabrication",
+  "units": "mm",
+  "parameters": {
+    "status": "PROTOTYPE FIT DRAFT \u2014 measure hardware and blaster before fabrication",
+    "units": "mm",
+    "base_thickness": 12.7,
+    "deck_length": 220.0,
+    "deck_width": 200.0,
+    "deck_thickness": 10.0,
+    "clear_gap": 140.0,
+    "cheek_thickness": 12.0,
+    "pivot_height": 250.0,
+    "cheek_split_height": 125.0,
+    "bearing_seat_diameter": 22.2,
+    "bearing_width": 7.0,
+    "seat_axial_allowance": 0.2,
+    "pivot_passage": 8.6,
+    "pivot_spacer_length": 10.0,
+    "sleeve_od": 22.0,
+    "sleeve_bore": 8.4,
+    "m4_clearance": 4.5,
+    "m3_clearance": 3.4,
+    "ear_thickness": 12.0,
+    "cradle_length": 200.0,
+    "rail_width": 16.0,
+    "rail_height": 14.0,
+    "rail_top_below_pivot": 65.0,
+    "saddle_spacing": 130.0,
+    "saddle_height": 24.0,
+    "turntable_opening": 53.975,
+    "turntable_thickness": 7.9375,
+    "bearing_platform_thickness": 8.0,
+    "yaw_post_height": 60.0,
+    "servo_body_length": 40.7,
+    "servo_body_width": 19.7,
+    "servo_body_height": 42.9,
+    "servo_body_clearance": 0.6,
+    "servo_tab_pitch": 49.0,
+    "servo_tab_row_pitch": 10.0,
+    "servo_output_offset": 10.0,
+    "yaw_tab_to_horn": 12.0,
+    "yaw_horn_adapter_thickness": 6.0,
+    "pitch_tab_to_horn": 8.0,
+    "pitch_servo_post_length": 24.0,
+    "pitch_servo_x": 0.0,
+    "pitch_servo_z": -30.0,
+    "drive_pin_x": 90.0,
+    "drive_pin_z": -45.0,
+    "drive_tower_outer_y": 94.0,
+    "linkage_plane_y": 97.0,
+    "servo_crank_radius": 20.0,
+    "pushrod_pin_distance": 95.0,
+    "horn_screw_clearance": 2.5,
+    "printer_bed_x": 220.0,
+    "printer_bed_y": 220.0,
+    "printer_bed_z": 250.0,
+    "brim_margin": 5.0,
+    "cheek_spacer_passage": 13.0
+  },
+  "datums": {
+    "deck_top": 98.6375,
+    "pivot_z": 348.6375,
+    "pitch_axis": [
+      0,
+      0,
+      348.6375
+    ],
+    "yaw_axis": [
+      0,
+      0,
+      0
+    ],
+    "rail_y": 44.8,
+    "ear_outer": 64.8,
+    "bearing_inner": 74.8,
+    "crank_pivot": [
+      0.0,
+      97.0,
+      318.6375
+    ],
+    "neutral_crank_deg": -104.17732616197384
+  },
+  "parts": [
+    {
+      "quantity": 1,
+      "description": "Half deck. Transfer-drill actual turntable pattern, clear of race and fasteners.",
+      "optional": false,
+      "name": "yaw_deck_left",
+      "dimensions_mm": [
+        109.86,
+        200.0,
+        10.01
+      ],
+      "volume_mm3": 216201.7,
+      "stl": "stl/yaw_deck_left.stl",
+      "step": "step/yaw_deck_left.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Half deck. Transfer-drill actual turntable pattern, clear of race and fasteners.",
+      "optional": false,
+      "name": "yaw_deck_right",
+      "dimensions_mm": [
+        109.86,
+        200.0,
+        10.01
+      ],
+      "volume_mm3": 216201.7,
+      "stl": "stl/yaw_deck_right.stl",
+      "step": "step/yaw_deck_right.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Under-deck splice; M4 through-bolts.",
+      "optional": false,
+      "name": "deck_joiner",
+      "dimensions_mm": [
+        70.0,
+        20.0,
+        6.0
+      ],
+      "volume_mm3": 8209.1,
+      "stl": "stl/deck_joiner.stl",
+      "step": "step/deck_joiner.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Fixed lower turntable plate. Transfer-drill bearing pattern before assembly.",
+      "optional": false,
+      "name": "bearing_platform",
+      "dimensions_mm": [
+        140.0,
+        140.0,
+        8.02
+      ],
+      "volume_mm3": 137986.3,
+      "stl": "stl/bearing_platform.stl",
+      "step": "step/bearing_platform.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 4,
+      "description": "Fixed platform support; long M4 through-bolt into plywood.",
+      "optional": false,
+      "name": "yaw_post",
+      "dimensions_mm": [
+        16.0,
+        16.01,
+        60.01
+      ],
+      "volume_mm3": 11109.5,
+      "stl": "stl/yaw_post.stl",
+      "step": "step/yaw_post.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Gusseted foot and lower upright. Print on foot; M4 through-bolts.",
+      "optional": false,
+      "name": "lower_cheek",
+      "dimensions_mm": [
+        100.0,
+        48.0,
+        125.0
+      ],
+      "volume_mm3": 182224.2,
+      "stl": "stl/lower_cheek.stl",
+      "step": "step/lower_cheek.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Outward-facing bearing/sleeve pocket. Print flat with pocket up.",
+      "optional": false,
+      "name": "upper_cheek",
+      "dimensions_mm": [
+        80.0,
+        149.0,
+        12.01
+      ],
+      "volume_mm3": 138035.0,
+      "stl": "stl/upper_cheek.stl",
+      "step": "step/upper_cheek.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 4,
+      "description": "Two splice plates per cheek, one per face.",
+      "optional": false,
+      "name": "cheek_splice",
+      "dimensions_mm": [
+        64.0,
+        70.0,
+        6.0
+      ],
+      "volume_mm3": 26498.3,
+      "stl": "stl/cheek_splice.stl",
+      "step": "step/cheek_splice.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Outer-ring capture, 18 mm relief clears nominal 16 mm pivot washers.",
+      "optional": false,
+      "name": "bearing_retainer",
+      "dimensions_mm": [
+        40.0,
+        40.0,
+        4.01
+      ],
+      "volume_mm3": 5236.9,
+      "stl": "stl/bearing_retainer.stl",
+      "step": "step/bearing_retainer.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Replaces each 608 bearing; fit-test friction/wear. Do not install both.",
+      "optional": true,
+      "name": "optional_pitch_sleeve",
+      "dimensions_mm": [
+        22.0,
+        22.01,
+        7.01
+      ],
+      "volume_mm3": 2273.0,
+      "stl": "stl/optional_pitch_sleeve.stl",
+      "step": "step/optional_pitch_sleeve.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "200 mm rail. Slots adjust padded saddles along the blaster.",
+      "optional": false,
+      "name": "cradle_rail",
+      "dimensions_mm": [
+        200.0,
+        16.0,
+        14.0
+      ],
+      "volume_mm3": 41132.4,
+      "stl": "stl/cradle_rail.stl",
+      "step": "step/cradle_rail.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Rear crossmember below rails; M4 through-bolts.",
+      "optional": false,
+      "name": "rear_crossmember",
+      "dimensions_mm": [
+        16.0,
+        105.6,
+        8.0
+      ],
+      "volume_mm3": 13262.3,
+      "stl": "stl/rear_crossmember.stl",
+      "step": "step/rear_crossmember.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Front crossmember and outboard pitch-drive arm; M3 pin. Print on flat crossmember bottom.",
+      "optional": false,
+      "name": "front_drive_crossmember",
+      "dimensions_mm": [
+        16.0,
+        146.8,
+        52.0
+      ],
+      "volume_mm3": 22705.5,
+      "stl": "stl/front_drive_crossmember.stl",
+      "step": "step/front_drive_crossmember.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 2,
+      "description": "Bolts outside rail. M8 pivot clamps to this rotating ear.",
+      "optional": false,
+      "name": "cradle_pivot_ear",
+      "dimensions_mm": [
+        50.0,
+        103.0,
+        12.0
+      ],
+      "volume_mm3": 60721.2,
+      "stl": "stl/cradle_pivot_ear.stl",
+      "step": "step/cradle_pivot_ear.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 4,
+      "description": "Flat contact + 3 mm soft pad. Strap slots. Measure shell before fitting.",
+      "optional": false,
+      "name": "saddle_block",
+      "dimensions_mm": [
+        36.0,
+        24.0,
+        24.0
+      ],
+      "volume_mm3": 18003.7,
+      "stl": "stl/saddle_block.stl",
+      "step": "step/saddle_block.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "50 mm disc, four deck bolts, radial slots for bought horn.",
+      "optional": false,
+      "name": "yaw_horn_adapter",
+      "dimensions_mm": [
+        50.01,
+        50.02,
+        6.02
+      ],
+      "volume_mm3": 10182.9,
+      "stl": "stl/yaw_horn_adapter.stl",
+      "step": "step/yaw_horn_adapter.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Bolts to supplied horn; 20 mm M3 linkage pin radius. Central spline-screw access.",
+      "optional": false,
+      "name": "pitch_crank_adapter",
+      "dimensions_mm": [
+        42.01,
+        32.01,
+        4.01
+      ],
+      "volume_mm3": 3087.4,
+      "stl": "stl/pitch_crank_adapter.stl",
+      "step": "step/pitch_crank_adapter.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Yaw template: measure servo tabs, shaft offset and flange-to-horn datums before print.",
+      "optional": false,
+      "name": "servo_carrier",
+      "dimensions_mm": [
+        84.0,
+        48.0,
+        6.0
+      ],
+      "volume_mm3": 18235.7,
+      "stl": "stl/servo_carrier.stl",
+      "step": "step/servo_carrier.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Pitch carrier: use lower -36 mm row and upper +18 mm row for posts. Middle row is unused, preserving the yaw template.",
+      "optional": false,
+      "name": "pitch_servo_carrier",
+      "dimensions_mm": [
+        84.0,
+        68.0,
+        6.0
+      ],
+      "volume_mm3": 28124.8,
+      "stl": "stl/pitch_servo_carrier.stl",
+      "step": "step/pitch_servo_carrier.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 4,
+      "description": "M4 through-bolted standoff; length depends on servo/horn datums.",
+      "optional": false,
+      "name": "yaw_servo_post",
+      "dimensions_mm": [
+        13.0,
+        13.0,
+        51.94
+      ],
+      "volume_mm3": 6067.8,
+      "stl": "stl/yaw_servo_post.stl",
+      "step": "step/yaw_servo_post.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 4,
+      "description": "M4 through-bolted standoff; length depends on servo/horn datums.",
+      "optional": false,
+      "name": "pitch_servo_post",
+      "dimensions_mm": [
+        13.0,
+        13.0,
+        24.01
+      ],
+      "volume_mm3": 2803.9,
+      "stl": "stl/pitch_servo_post.stl",
+      "step": "step/pitch_servo_post.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    },
+    {
+      "quantity": 1,
+      "description": "Left to right: 8.2 / 8.4 / 22.0 / 22.2 mm test holes. Print first.",
+      "optional": true,
+      "name": "fit_coupon",
+      "dimensions_mm": [
+        120.0,
+        54.0,
+        9.01
+      ],
+      "volume_mm3": 50441.1,
+      "stl": "stl/fit_coupon.stl",
+      "step": "step/fit_coupon.step",
+      "watertight": true,
+      "fits_configured_bed": true
+    }
+  ],
+  "assembly": [
+    {
+      "name": "yaw_deck_left",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "yaw_deck_left",
+      "mesh": "preview/yaw_deck_left.stl"
+    },
+    {
+      "name": "yaw_deck_right",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "yaw_deck_right",
+      "mesh": "preview/yaw_deck_right.stl"
+    },
+    {
+      "name": "deck_joiner_0",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "deck_joiner",
+      "mesh": "preview/deck_joiner_0.stl"
+    },
+    {
+      "name": "deck_joiner_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "deck_joiner",
+      "mesh": "preview/deck_joiner_1.stl"
+    },
+    {
+      "name": "bearing_platform",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "bearing_platform",
+      "mesh": "preview/bearing_platform.stl"
+    },
+    {
+      "name": "yaw_post_0",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_post",
+      "mesh": "preview/yaw_post_0.stl"
+    },
+    {
+      "name": "yaw_post_1",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_post",
+      "mesh": "preview/yaw_post_1.stl"
+    },
+    {
+      "name": "yaw_post_2",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_post",
+      "mesh": "preview/yaw_post_2.stl"
+    },
+    {
+      "name": "yaw_post_3",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_post",
+      "mesh": "preview/yaw_post_3.stl"
+    },
+    {
+      "name": "yaw_horn_adapter",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "yaw_horn_adapter",
+      "mesh": "preview/yaw_horn_adapter.stl"
+    },
+    {
+      "name": "servo_carrier_yaw",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "servo_carrier",
+      "mesh": "preview/servo_carrier_yaw.stl"
+    },
+    {
+      "name": "yaw_servo_post_0",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_servo_post",
+      "mesh": "preview/yaw_servo_post_0.stl"
+    },
+    {
+      "name": "yaw_servo_post_1",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_servo_post",
+      "mesh": "preview/yaw_servo_post_1.stl"
+    },
+    {
+      "name": "yaw_servo_post_2",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_servo_post",
+      "mesh": "preview/yaw_servo_post_2.stl"
+    },
+    {
+      "name": "yaw_servo_post_3",
+      "kind": "print",
+      "motion": "fixed",
+      "part": "yaw_servo_post",
+      "mesh": "preview/yaw_servo_post_3.stl"
+    },
+    {
+      "name": "pitch_servo_carrier_pitch",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "pitch_servo_carrier",
+      "mesh": "preview/pitch_servo_carrier_pitch.stl"
+    },
+    {
+      "name": "pitch_servo_post_0",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "pitch_servo_post",
+      "mesh": "preview/pitch_servo_post_0.stl"
+    },
+    {
+      "name": "pitch_servo_post_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "pitch_servo_post",
+      "mesh": "preview/pitch_servo_post_1.stl"
+    },
+    {
+      "name": "pitch_servo_post_2",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "pitch_servo_post",
+      "mesh": "preview/pitch_servo_post_2.stl"
+    },
+    {
+      "name": "pitch_servo_post_3",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "pitch_servo_post",
+      "mesh": "preview/pitch_servo_post_3.stl"
+    },
+    {
+      "name": "lower_cheek_-1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "lower_cheek",
+      "mesh": "preview/lower_cheek_-1.stl"
+    },
+    {
+      "name": "upper_cheek_-1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "upper_cheek",
+      "mesh": "preview/upper_cheek_-1.stl"
+    },
+    {
+      "name": "cheek_splice_-1_-1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "cheek_splice",
+      "mesh": "preview/cheek_splice_-1_-1.stl"
+    },
+    {
+      "name": "cheek_splice_-1_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "cheek_splice",
+      "mesh": "preview/cheek_splice_-1_1.stl"
+    },
+    {
+      "name": "bearing_retainer_-1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "bearing_retainer",
+      "mesh": "preview/bearing_retainer_-1.stl"
+    },
+    {
+      "name": "cradle_rail_-1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "cradle_rail",
+      "mesh": "preview/cradle_rail_-1.stl"
+    },
+    {
+      "name": "cradle_pivot_ear_-1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "cradle_pivot_ear",
+      "mesh": "preview/cradle_pivot_ear_-1.stl"
+    },
+    {
+      "name": "saddle_block_-1_0",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "saddle_block",
+      "mesh": "preview/saddle_block_-1_0.stl"
+    },
+    {
+      "name": "saddle_block_-1_1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "saddle_block",
+      "mesh": "preview/saddle_block_-1_1.stl"
+    },
+    {
+      "name": "608_bearing_-1",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/608_bearing_-1.stl"
+    },
+    {
+      "name": "sleeve_alternative_-1",
+      "kind": "alternative",
+      "motion": "yaw",
+      "part": "optional_pitch_sleeve",
+      "mesh": "preview/sleeve_alternative_-1.stl"
+    },
+    {
+      "name": "pivot_spacer_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/pivot_spacer_-1.stl"
+    },
+    {
+      "name": "M8_pivot_reference_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_pivot_reference_-1.stl"
+    },
+    {
+      "name": "M8_washer_inner_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_washer_inner_-1.stl"
+    },
+    {
+      "name": "M8_washer_outer_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_washer_outer_-1.stl"
+    },
+    {
+      "name": "M8_head_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_head_-1.stl"
+    },
+    {
+      "name": "M8_nut_-1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_nut_-1.stl"
+    },
+    {
+      "name": "lower_cheek_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "lower_cheek",
+      "mesh": "preview/lower_cheek_1.stl"
+    },
+    {
+      "name": "upper_cheek_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "upper_cheek",
+      "mesh": "preview/upper_cheek_1.stl"
+    },
+    {
+      "name": "cheek_splice_1_-1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "cheek_splice",
+      "mesh": "preview/cheek_splice_1_-1.stl"
+    },
+    {
+      "name": "cheek_splice_1_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "cheek_splice",
+      "mesh": "preview/cheek_splice_1_1.stl"
+    },
+    {
+      "name": "bearing_retainer_1",
+      "kind": "print",
+      "motion": "yaw",
+      "part": "bearing_retainer",
+      "mesh": "preview/bearing_retainer_1.stl"
+    },
+    {
+      "name": "cradle_rail_1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "cradle_rail",
+      "mesh": "preview/cradle_rail_1.stl"
+    },
+    {
+      "name": "cradle_pivot_ear_1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "cradle_pivot_ear",
+      "mesh": "preview/cradle_pivot_ear_1.stl"
+    },
+    {
+      "name": "saddle_block_1_0",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "saddle_block",
+      "mesh": "preview/saddle_block_1_0.stl"
+    },
+    {
+      "name": "saddle_block_1_1",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "saddle_block",
+      "mesh": "preview/saddle_block_1_1.stl"
+    },
+    {
+      "name": "608_bearing_1",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/608_bearing_1.stl"
+    },
+    {
+      "name": "sleeve_alternative_1",
+      "kind": "alternative",
+      "motion": "yaw",
+      "part": "optional_pitch_sleeve",
+      "mesh": "preview/sleeve_alternative_1.stl"
+    },
+    {
+      "name": "pivot_spacer_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/pivot_spacer_1.stl"
+    },
+    {
+      "name": "M8_pivot_reference_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_pivot_reference_1.stl"
+    },
+    {
+      "name": "M8_washer_inner_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_washer_inner_1.stl"
+    },
+    {
+      "name": "M8_washer_outer_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_washer_outer_1.stl"
+    },
+    {
+      "name": "M8_head_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_head_1.stl"
+    },
+    {
+      "name": "M8_nut_1",
+      "kind": "hardware",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/M8_nut_1.stl"
+    },
+    {
+      "name": "rear_crossmember",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "rear_crossmember",
+      "mesh": "preview/rear_crossmember.stl"
+    },
+    {
+      "name": "front_drive_crossmember",
+      "kind": "print",
+      "motion": "pitch",
+      "part": "front_drive_crossmember",
+      "mesh": "preview/front_drive_crossmember.stl"
+    },
+    {
+      "name": "pitch_crank_adapter",
+      "kind": "print",
+      "motion": "crank",
+      "part": "pitch_crank_adapter",
+      "mesh": "preview/pitch_crank_adapter.stl"
+    },
+    {
+      "name": "pushrod_reference",
+      "kind": "hardware",
+      "motion": "linkage",
+      "part": null,
+      "mesh": "preview/pushrod_reference.stl"
+    },
+    {
+      "name": "servo_joint_pin",
+      "kind": "hardware",
+      "motion": "linkage",
+      "part": null,
+      "mesh": "preview/servo_joint_pin.stl"
+    },
+    {
+      "name": "cradle_joint_pin",
+      "kind": "hardware",
+      "motion": "linkage",
+      "part": null,
+      "mesh": "preview/cradle_joint_pin.stl"
+    },
+    {
+      "name": "yaw_servo_envelope",
+      "kind": "hardware",
+      "motion": "fixed",
+      "part": null,
+      "mesh": "preview/yaw_servo_envelope.stl"
+    },
+    {
+      "name": "yaw_bought_horn_reference",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/yaw_bought_horn_reference.stl"
+    },
+    {
+      "name": "yaw_servo_shaft_reference",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/yaw_servo_shaft_reference.stl"
+    },
+    {
+      "name": "pitch_bought_horn_reference",
+      "kind": "hardware",
+      "motion": "crank",
+      "part": null,
+      "mesh": "preview/pitch_bought_horn_reference.stl"
+    },
+    {
+      "name": "pitch_servo_shaft_reference",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/pitch_servo_shaft_reference.stl"
+    },
+    {
+      "name": "pitch_servo_envelope",
+      "kind": "hardware",
+      "motion": "yaw",
+      "part": null,
+      "mesh": "preview/pitch_servo_envelope.stl"
+    },
+    {
+      "name": "plywood_base",
+      "kind": "wood",
+      "motion": "fixed",
+      "part": null,
+      "mesh": "preview/plywood_base.stl"
+    },
+    {
+      "name": "turntable_envelope",
+      "kind": "hardware",
+      "motion": "fixed",
+      "part": null,
+      "mesh": "preview/turntable_envelope.stl"
+    },
+    {
+      "name": "unmeasured_blaster_envelope",
+      "kind": "envelope",
+      "motion": "pitch",
+      "part": null,
+      "mesh": "preview/unmeasured_blaster_envelope.stl"
+    }
+  ],
+  "validation": {
+    "all_parts_valid_solids": true,
+    "all_stls_watertight": true,
+    "bed_fit_checked": true,
+    "printed_part_collision_samples": [
+      {
+        "yaw": 0,
+        "pitch": 0
+      },
+      {
+        "yaw": -30,
+        "pitch": -5
+      },
+      {
+        "yaw": 30,
+        "pitch": -5
+      },
+      {
+        "yaw": -30,
+        "pitch": 25
+      },
+      {
+        "yaw": 30,
+        "pitch": 25
+      },
+      {
+        "yaw": 0,
+        "pitch": 10
+      },
+      {
+        "yaw": 0,
+        "pitch": 20
+      }
+    ],
+    "printed_part_collisions": [],
+    "sampled_hardware_reference_collisions": [],
+    "linkage_samples": [
+      {
+        "pitch": -5,
+        "crank_deg": -117.1902,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": -4,
+        "crank_deg": -114.5559,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": -3,
+        "crank_deg": -111.9382,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": -2,
+        "crank_deg": -109.3364,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": -1,
+        "crank_deg": -106.7497,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 0,
+        "crank_deg": -104.1773,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 1,
+        "crank_deg": -101.6186,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 2,
+        "crank_deg": -99.0728,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 3,
+        "crank_deg": -96.5392,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 4,
+        "crank_deg": -94.0172,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 5,
+        "crank_deg": -91.506,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 6,
+        "crank_deg": -89.005,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 7,
+        "crank_deg": -86.5134,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 8,
+        "crank_deg": -84.0307,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 9,
+        "crank_deg": -81.556,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 10,
+        "crank_deg": -79.0888,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 11,
+        "crank_deg": -76.6282,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 12,
+        "crank_deg": -74.1735,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 13,
+        "crank_deg": -71.724,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 14,
+        "crank_deg": -69.279,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 15,
+        "crank_deg": -66.8375,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 16,
+        "crank_deg": -64.3989,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 17,
+        "crank_deg": -61.9621,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 18,
+        "crank_deg": -59.5264,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 19,
+        "crank_deg": -57.0907,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 20,
+        "crank_deg": -54.6541,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 21,
+        "crank_deg": -52.2154,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 22,
+        "crank_deg": -49.7735,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 23,
+        "crank_deg": -47.3272,
+        "closure_error_mm": 1.4210854715202004e-14
+      },
+      {
+        "pitch": 24,
+        "crank_deg": -44.8751,
+        "closure_error_mm": 0.0
+      },
+      {
+        "pitch": 25,
+        "crank_deg": -42.4158,
+        "closure_error_mm": 0.0
+      }
+    ],
+    "hardware_interfaces_measured": false,
+    "blaster_fit_measured": false,
+    "hardware_clearance_and_fastener_access_fully_checked": false,
+    "continuous_motion_collision_proven": false,
+    "loaded_strength_tested": false
+  }
+}

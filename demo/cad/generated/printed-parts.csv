@@ -1,0 +1,23 @@
+Part,Qty,Optional,Print bounding box mm,Description
+yaw_deck_left,1,False,109.86 x 200.0 x 10.01,"Half deck. Transfer-drill actual turntable pattern, clear of race and fasteners."
+yaw_deck_right,1,False,109.86 x 200.0 x 10.01,"Half deck. Transfer-drill actual turntable pattern, clear of race and fasteners."
+deck_joiner,2,False,70.0 x 20.0 x 6.0,Under-deck splice; M4 through-bolts.
+bearing_platform,1,False,140.0 x 140.0 x 8.02,Fixed lower turntable plate. Transfer-drill bearing pattern before assembly.
+yaw_post,4,False,16.0 x 16.01 x 60.01,Fixed platform support; long M4 through-bolt into plywood.
+lower_cheek,2,False,100.0 x 48.0 x 125.0,Gusseted foot and lower upright. Print on foot; M4 through-bolts.
+upper_cheek,2,False,80.0 x 149.0 x 12.01,Outward-facing bearing/sleeve pocket. Print flat with pocket up.
+cheek_splice,4,False,64.0 x 70.0 x 6.0,"Two splice plates per cheek, one per face."
+bearing_retainer,2,False,40.0 x 40.0 x 4.01,"Outer-ring capture, 18 mm relief clears nominal 16 mm pivot washers."
+optional_pitch_sleeve,2,True,22.0 x 22.01 x 7.01,Replaces each 608 bearing; fit-test friction/wear. Do not install both.
+cradle_rail,2,False,200.0 x 16.0 x 14.0,200 mm rail. Slots adjust padded saddles along the blaster.
+rear_crossmember,1,False,16.0 x 105.6 x 8.0,Rear crossmember below rails; M4 through-bolts.
+front_drive_crossmember,1,False,16.0 x 146.8 x 52.0,Front crossmember and outboard pitch-drive arm; M3 pin. Print on flat crossmember bottom.
+cradle_pivot_ear,2,False,50.0 x 103.0 x 12.0,Bolts outside rail. M8 pivot clamps to this rotating ear.
+saddle_block,4,False,36.0 x 24.0 x 24.0,Flat contact + 3 mm soft pad. Strap slots. Measure shell before fitting.
+yaw_horn_adapter,1,False,50.01 x 50.02 x 6.02,"50 mm disc, four deck bolts, radial slots for bought horn."
+pitch_crank_adapter,1,False,42.01 x 32.01 x 4.01,Bolts to supplied horn; 20 mm M3 linkage pin radius. Central spline-screw access.
+servo_carrier,1,False,84.0 x 48.0 x 6.0,"Yaw template: measure servo tabs, shaft offset and flange-to-horn datums before print."
+pitch_servo_carrier,1,False,84.0 x 68.0 x 6.0,"Pitch carrier: use lower -36 mm row and upper +18 mm row for posts. Middle row is unused, preserving the yaw template."
+yaw_servo_post,4,False,13.0 x 13.0 x 51.94,M4 through-bolted standoff; length depends on servo/horn datums.
+pitch_servo_post,4,False,13.0 x 13.0 x 24.01,M4 through-bolted standoff; length depends on servo/horn datums.
+fit_coupon,1,True,120.0 x 54.0 x 9.01,Left to right: 8.2 / 8.4 / 22.0 / 22.2 mm test holes. Print first.
