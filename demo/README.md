@@ -42,6 +42,10 @@ These are component examples, not a validated purchase list or a claim that a pa
 
 ## Rapidstrike and second-stage presentation revision
 
-The procedural blaster now follows the full Rapidstrike CS-18 silhouette and a published approximate 685 mm length reference. The new `mount-plan.md` records the source, proposed 360 × 300 mm base, 140 mm inner gap and 250 mm pivot height, and a linked candidate BOM. Local shell geometry and fit remain provisional until measured. Open **Buildable mount → View mount shopping list** for the supplier table and a plan download.
+The procedural blaster now follows the full Rapidstrike CS-18 silhouette and a published approximate 685 mm length reference. The new `mount-plan.md` records the source, proposed 360 × 300 mm base, 140 mm inner gap and 250 mm pivot height, and a linked candidate BOM. Local shell geometry and fit remain provisional until measured. Open **Original mount → View mount shopping list** for the supplier table and a plan download.
 
 The embedded stage has larger live readings and a dedicated before/trim/after pitch comparison. The correction ramps over 3.2 seconds, with a blue camera-centered ghost pose and reference ray. The actual gun angle and orange ray move by the displayed trim; the physical rotation is not artificially magnified. **Replay trim** restarts just that motion. The laptop's command values are smaller and fade after handoff. Styling for this revision is isolated in `stage-two.css`.
+
+## Plywood mount alternative
+
+The **Plywood alternative** tab adds a separate assembly while preserving the original printed mount. It uses a plywood deck/uprights/open cradle, ordinary angle brackets, a bought yaw bearing, supported pitch pivots and small printed adapters. Yaw/pitch sliders, an automatic sweep and the shared exploded-view control demonstrate both axes. The pitch crank/pushrod stays connected in the assembled animation. See `plywood-mount-plan.md` for provisional dimensions, parts, Ford-resource assumptions and assembly notes. This is a concept mock, not validated CAD or a load-tested mechanism.

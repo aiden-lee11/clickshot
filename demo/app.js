@@ -6,7 +6,7 @@ const $ = id => document.getElementById(id);
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 const rad = THREE.MathUtils.degToRad;
 const degrees = value => (Math.abs(value)<.05 ? 0 : value).toFixed(1);
-const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
+const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'original', explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
 const targets = [{ name:'A', yaw:-22, pitch:6, range:2.2 }, { name:'B', yaw:12, pitch:18, range:3.6 }, { name:'C', yaw:26, pitch:-3, range:2.8 }];
 let renderer, scene, camera, controls, yawGroup, pitchGroup, cradle, bearingDeck, sightLine, com, yawArc, pitchArc, projectile, lastFrame = 0;
 // Mount units: one scene unit = 100 mm. Overall blaster length is source-based;
@@ -198,9 +198,127 @@ function initScene() {
   pitchArc=line(pitchGroup,pitchPoints,'#718f5c',.65);
   com=new THREE.Group();pitchGroup.add(com);ring(com,.105,.014,0,0,.65,mat.lime,'z');line(com,[[-.18,0,.65],[.18,0,.65]],'#b2da72');line(com,[[0,-.18,.65],[0,.18,.65]],'#b2da72');com.visible=false;
   sightLine=line(scene,[[0,0,0],[1,0,0]],'#df783d',.85);
+  buildPlywoodAlternative();
   buildRange();
   projectile=new THREE.Group();cylinder(projectile,.055,.055,.35,0,0,0,mat.teal,'x');cylinder(projectile,.06,.06,.08,.2,0,0,mat.orange,'x');scene.add(projectile);projectile.visible=false;
   const ro=new ResizeObserver(resize);ro.observe(viewport);setView();
+}
+
+// Alternative: ordinary plywood cuts and bought bearings, with no tall printed yoke.
+function buildPlywoodAlternative(){
+  const root=new THREE.Group();scene.add(root);root.visible=false;
+  const birch=material('#d5b784',.9),edge=material('#ad8858',.9),plyLight=material('#ead1a5',.9);
+  function plywood(parent,w,h,d,x,y,z,vertical=false){
+    const board=box(parent,w,h,d,x,y,z,birch,.012);
+    // Visible lamination lines and restrained grain communicate ordinary sheet material.
+    if(vertical){
+      for(let i=1;i<6;i++)box(parent,w+.002,.014,.002,x,y-h/2+i*h/6,z+d/2+.002,edge,.001);
+      for(let i=0;i<4;i++)box(parent,.008,h*.90,.002,x-w*.34+i*w*.22,y,z+d/2+.004,plyLight,.001);
+    }else{
+      for(let i=1;i<5;i++)box(parent,w+.002,.006,d+.002,x,y-h/2+i*h/5,z,i%2?edge:plyLight,.001);
+      for(let i=0;i<6;i++)box(parent,w*.96,.002,.008,x,y+h/2+.003,z-d*.38+i*d*.15,edge,.001);
+    }
+    return board;
+  }
+  plywood(root,3.6,.127,3,0,.12,0);
+  for(const x of [-1.5,1.5])for(const z of [-1.18,1.18])cylinder(root,.12,.14,.08,x,.02,z,mat.rubber);
+  // Two table-clamp silhouettes, on the fixed plate rather than moving structure.
+  for(const x of [-1.62,1.62]){
+    box(root,.24,.05,.55,x,.22,1.26,mat.dark,.012);
+    box(root,.07,.34,.12,x,.06,1.49,mat.dark,.008);
+    cylinder(root,.025,.025,.32,x,-.01,1.25,mat.metal);
+    box(root,.25,.04,.04,x,-.14,1.25,mat.dark,.008);
+  }
+  // Four sawn wood blocks leave space for a coaxial servo below the turntable.
+  for(const x of [-.43,.43])for(const z of [-.43,.43]){
+    plywood(root,.22,.47,.22,x,.43,z,true);
+    cylinder(root,.025,.025,.56,x,.43,z,mat.metal);
+  }
+  function turntablePlate(parent,y){
+    const shape=new THREE.Shape();shape.moveTo(-.508,-.508);shape.lineTo(.508,-.508);shape.lineTo(.508,.508);shape.lineTo(-.508,.508);shape.closePath();
+    const hole=new THREE.Path();hole.absarc(0,0,.270,0,Math.PI*2,true);shape.holes.push(hole);
+    const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.015,bevelEnabled:false}),mat.metal);
+    mesh.rotation.x=-Math.PI/2;mesh.position.y=y;mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);
+  }
+  turntablePlate(root,.68);
+  ring(root,.38,.025,0,.714,0,mat.metal);ring(root,.38,.012,0,.74,0,mat.dark);
+  box(root,.407,.429,.197,0,.414,0,mat.dark,.02);
+  box(root,.60,.07,.31,0,.22,0,mat.print,.012);
+  cylinder(root,.07,.07,.10,0,.67,0,mat.ivory);
+  cylinder(root,.15,.15,.045,0,.77,0,mat.ivory);
+  cylinder(root,.12,.12,.10,0,.80,0,mat.print);
+  const yaw=new THREE.Group();yaw.position.y=mountSpec.yawHeight;root.add(yaw);
+  plywood(yaw,2.6,.127,2.15,0,.02,0);
+  turntablePlate(yaw,-.14);
+  // Straight side panels. Bearing bores stay in small, replaceable printed blocks.
+  for(const z of [-.865,.865]){
+    plywood(yaw,.90,2.70,.127,-.05,1.435,z,true);
+    for(const x of [-.36,.25]){
+      const outer=z+(z>0?.18:-.18);
+      box(yaw,.17,.035,.42,x,.105,outer,mat.metal,.003);
+      box(yaw,.17,.35,.035,x,.26,z+(z>0?.09:-.09),mat.metal,.003);
+      cylinder(yaw,.03,.03,.02,x,.43,z+(z>0?.12:-.12),mat.dark,'z');
+      cylinder(yaw,.03,.03,.02,x,.13,outer,mat.dark);
+    }
+    box(yaw,.40,.40,.09,-.05,2.5,z+(z>0?.09:-.09),mat.print,.02);
+    ring(yaw,.084,.025,-.05,2.5,z+(z>0?.15:-.15),mat.metal,'z');
+    for(const x of [-.19,.09])for(const y of [2.36,2.64])cylinder(yaw,.022,.022,.02,x,y,z+(z>0?.145:-.145),mat.dark,'z');
+  }
+  // Pitch servo is outside the frame; its short crank and rod drive the cradle.
+  box(yaw,.68,.06,.45,-.55,1.53,1.10,mat.metal,.008);
+  box(yaw,.407,.429,.197,-.55,1.78,1.20,mat.dark,.02);
+  box(yaw,.12,.15,.13,-.55,1.95,1.32,mat.ivory,.008);
+  const pitch=new THREE.Group();pitch.position.set(-.05,2.5,0);yaw.add(pitch);
+  for(const z of [-.79,.79]){
+    cylinder(pitch,.04,.04,.49,0,0,z,mat.metal,'z');
+    cylinder(pitch,.065,.065,.055,0,0,z+(z>0?.25:-.25),mat.metal,'z',6);
+    cylinder(pitch,.06,.06,.06,0,0,z+(z>0?.16:-.16),mat.metal,'z');
+  }
+  // A ladder cradle leaves the center open for the magazine and the grip.
+  const frame=new THREE.Group();pitch.add(frame);
+  for(const z of [-.64,.64]){
+    plywood(frame,2.6,.127,.16,0,-.38,z);
+    plywood(frame,.40,.42,.127,0,-.16,z,true);
+    for(const x of [-.80,.80]){
+      box(frame,.24,.38,.16,x,-.14,z,mat.print,.014);
+      box(frame,.27,.05,.20,x,.07,z,mat.rubber,.01);
+      box(frame,.10,.025,1.48,x,-.46,0,mat.rubber,.006);
+      box(frame,.10,1.30,.025,x,.19,z>0?.73:-.73,mat.rubber,.006);
+    }
+  }
+  for(const x of [-1.20,1.20])plywood(frame,.14,.127,1.44,x,-.38,0);
+  const gun=parts.gun.clone();frame.add(gun);
+  // Short lug on the moving side rail: linkage reaches the cradle, never the shell.
+  box(pitch,.58,.10,.08,.24,-.20,1.20,mat.print,.012);
+  const jointA=new THREE.Vector3(-.55,1.95,1.34);
+  const movingLug=new THREE.Vector3(.45,-.20,1.34);
+  const crank=cylinder(yaw,.025,.025,1,0,0,0,mat.ivory);
+  const rod=cylinder(yaw,.017,.017,1,0,0,0,mat.orange);
+  const elbow=cylinder(yaw,.035,.035,.04,0,0,1.34,mat.metal,'z');
+  const lug=cylinder(yaw,.035,.035,.04,0,0,1.34,mat.metal,'z');
+  const yawGuide=[];for(let i=0;i<=50;i++){const a=-.9+i/50*1.8;yawGuide.push([Math.cos(a)*1.5,.28,Math.sin(a)*1.5]);}
+  line(root,yawGuide,'#df6a39',.6);
+  const pitchGuide=[];for(let i=0;i<=40;i++){const a=-.30+i/40*.9;pitchGuide.push([Math.cos(a)*.9,Math.sin(a)*.9,1.5]);}
+  line(pitch,pitchGuide,'#718f5c',.5);
+  const balance=new THREE.Group();pitch.add(balance);ring(balance,.10,.012,0,0,1.10,mat.lime,'z');
+  line(balance,[[-.16,0,1.1],[.16,0,1.1]],'#8aa36d');line(balance,[[0,-.16,1.1],[0,.16,1.1]],'#8aa36d');
+  parts.plywood={root,yaw,pitch,frame,gun,crank,rod,elbow,lug,jointA,movingLug};
+}
+function positionRod(mesh,a,b){
+  const delta=b.clone().sub(a);mesh.position.copy(a).add(b).multiplyScalar(.5);
+  mesh.scale.y=delta.length();mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+}
+function updatePlywood(){
+  const p=parts.plywood,ex=state.actualExplode;
+  p.yaw.rotation.y=-rad(state.actualYaw);p.pitch.rotation.z=rad(state.actualPitch);
+  p.yaw.position.y=mountSpec.yawHeight+ex*.45;p.pitch.position.y=mountSpec.pitchHeight+ex*.55;p.frame.position.y=ex*.35;
+  // In assembly view, solve a planar two-link closure for a fixed-length pushrod.
+  // Exploded view intentionally separates joints and is not a drive configuration.
+  const b=p.movingLug.clone().applyAxisAngle(new THREE.Vector3(0,0,1),p.pitch.rotation.z).add(p.pitch.position);
+  const a=p.jointA,d=Math.hypot(b.x-a.x,b.y-a.y),r=.26,length=1.0;
+  const angle=Math.atan2(b.y-a.y,b.x-a.x)+Math.acos(clamp((d*d+r*r-length*length)/(2*d*r),-1,1));
+  const c=new THREE.Vector3(a.x+r*Math.cos(angle),a.y+r*Math.sin(angle),a.z);
+  positionRod(p.crank,a,c);positionRod(p.rod,c,b);p.elbow.position.copy(c);p.lug.position.copy(b);
 }
 
 const pivot = new THREE.Vector3(-.05,mountSpec.yawHeight+mountSpec.pitchHeight,0);
@@ -334,12 +452,21 @@ function fire(source='button'){
     parts.shotOrigin=projectile.position.clone();parts.shotEnd=selectedPoint();projectile.visible=true;
   }
 }
-function switchMode(mount){
-  state.mount=mount;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
+function switchMode(mount,variant='original'){
+  state.mount=mount;state.mountVariant=variant;state.paused=false;state.actualExplode=0;state.actualYaw=0;state.actualPitch=0;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
   $('demo-controls').hidden=mount;$('mount-controls').hidden=!mount;$('mount-labels').hidden=!mount;$('target-labels').hidden=mount;$('walkthrough').hidden=mount;$('mount-footer').hidden=!mount;
   document.querySelector('.world-pane').classList.toggle('mount-mode',mount);
-  $('demo-tab').classList.toggle('active',!mount);$('mount-tab').classList.toggle('active',mount);$('demo-tab').setAttribute('aria-selected',String(!mount));$('mount-tab').setAttribute('aria-selected',String(mount));
-  $('world-title').textContent=mount?'Printed + off-the-shelf':'Physical system';$('world-subtitle').textContent=mount?'Supported pivots. Ordinary tools.':'Same targets. Real movement.';
+  const alternative=mount&&variant==='plywood';
+  for(const [id,active]of [['demo-tab',!mount],['mount-tab',mount&&!alternative],['plywood-tab',alternative]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-selected',String(active));}
+  $('original-mount-summary').hidden=alternative;$('original-mount-notes').hidden=alternative;
+  $('plywood-summary').hidden=!alternative;$('plywood-notes').hidden=!alternative;
+  document.body.dataset.mountVariant=alternative?'plywood':'original';
+  if(parts.plywood){parts.assembly.visible=!alternative;parts.plywood.root.visible=alternative;}
+  $('cradle-label').textContent=alternative?'Flat plywood + angle brackets':'140 mm inner gap · proposed';
+  $('pivot-label').textContent=alternative?'Bearing-supported pitch pivots':'250 mm pivot height · proposed';
+  $('base-label').textContent=alternative?'Bought turntable · yaw':'360 × 300 mm plywood · proposed';
+  $('mount-footer').innerHTML=alternative?'<span><i class="wood-dot"></i>Scrap plywood frame</span><span><i class="buy-dot"></i>Bought bearings + brackets</span><span><i class="print-dot"></i>Small printed adapters</span><span>Concept · measure before cutting</span>':'<span><i class="print-dot"></i>Printed PETG parts</span><span><i class="buy-dot"></i>Bought hardware</span><span>Allen keys · screwdriver · drill · 3D printer</span><span>No custom metal machining.</span>';
+  $('world-title').textContent=mount?(alternative?'Plywood alternative':'Printed + off-the-shelf'):'Physical system';$('world-subtitle').textContent=mount?(alternative?'Flat cuts. Supported weight. Two axes.':'Supported pivots. Ordinary tools.'):'Same targets. Real movement.';
   $('world-help').textContent=mount?'Drag to inspect · Scroll to zoom':'Drag to orbit · Click a target';
   $('mount-sweep').textContent='↔ Move both axes';$('explode').value=0;$('explode-value').textContent='0%';
   document.querySelector('.laptop-pane').scrollTop=0;if(com)com.visible=mount;showPhase(0);setView();
@@ -401,7 +528,8 @@ $('pause').addEventListener('click',()=>{state.paused=!state.paused;$('pause').t
 for(const button of document.querySelectorAll('[data-step]'))button.addEventListener('click',()=>{
   const n=Number(button.dataset.step);if(state.selected===null){if(n===1)pickTarget(1);return;}showPhase(n);
 });
-$('demo-tab').addEventListener('click',()=>switchMode(false));$('mount-tab').addEventListener('click',()=>switchMode(true));
+$('demo-tab').addEventListener('click',()=>switchMode(false));$('mount-tab').addEventListener('click',()=>switchMode(true));$('plywood-tab').addEventListener('click',()=>switchMode(true,'plywood'));
+for(const axis of ['yaw','pitch'])$('plywood-'+axis).addEventListener('input',e=>{state.sweep=false;state[axis]=Number(e.target.value);$('mount-sweep').textContent='↔ Move both axes';});
 $('iso-view').addEventListener('click',()=>setView());$('side-view').addEventListener('click',()=>setView(true));
 $('home').addEventListener('click',()=>{state.yaw=0;state.pitch=0;state.selected=null;state.sweep=false;state.explode=0;state.trimApplied=0;state.command=null;state.selectionPose={yaw:0,pitch:0};$('explode').value=0;$('explode-value').textContent='0%';$('mount-sweep').textContent='↔ Move both axes';showPhase(0);setView();});
 $('explode').addEventListener('input',e=>{state.explode=Number(e.target.value)/100;$('explode-value').textContent=`${e.target.value}%`;});
@@ -409,7 +537,7 @@ $('mount-sweep').addEventListener('click',()=>{state.sweep=!state.sweep;$('mount
 // Keyboard access keeps the whole presentation usable without a mouse.
 feed.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pickTarget(1);}});
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&!['INPUT','BUTTON','SUMMARY'].includes(document.activeElement.tagName)){e.preventDefault();fire();}});
-document.querySelector('.tabs').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();switchMode(!state.mount);$(state.mount?'mount-tab':'demo-tab').focus();}});
+document.querySelector('.tabs').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const ids=['demo-tab','mount-tab','plywood-tab'];const current=state.mount?(state.mountVariant==='plywood'?2:1):0;const next=(current+(e.key==='ArrowRight'?1:2))%3;switchMode(next!==0,next===2?'plywood':'original');$(ids[next]).focus();}});
 function sequence(dt){
   if(state.mount||state.paused||state.phase===0)return;
   state.phaseElapsed+=dt;const t=state.phaseElapsed;
@@ -425,13 +553,17 @@ function sequence(dt){
     $('mcu-message').textContent=`Range ${state.range.toFixed(1)} m · awaiting confirmation.`;$('mcu-badge').textContent='READY';
   }
 }
-function updateProjectedLabel(element,position){
-  const p=position.clone().project(camera);element.style.left=`${(p.x*.5+.5)*viewport.clientWidth}px`;element.style.top=`${(-p.y*.5+.5)*viewport.clientHeight}px`;element.style.visibility=p.z>1||p.z< -1?'hidden':'visible';
+function updateProjectedLabel(element,position,offsetX=0,offsetY=0){
+  const p=position.clone().project(camera),w=viewport.clientWidth;
+  const left=(p.x*.5+.5)*w+offsetX;
+  element.style.left=`${offsetX?clamp(left,element.offsetWidth/2+10,w-element.offsetWidth/2-10):left}px`;
+  element.style.top=`${(-p.y*.5+.5)*viewport.clientHeight+offsetY}px`;element.style.visibility=p.z>1||p.z< -1?'hidden':'visible';
 }
 function animate(now){
   requestAnimationFrame(animate);const dt=Math.min((now-lastFrame)/1000||.016,.1);lastFrame=now;
   sequence(dt);const smooth=state.paused?0:1-Math.exp(-dt*3.3);
-  if(state.sweep){state.yaw=Math.sin(now*.0005)*34;state.pitch=9+Math.sin(now*.0008)*14;updateInputs();}
+  if(state.sweep){const alternative=state.mountVariant==='plywood';state.yaw=Math.sin(now*.0005)*(alternative?28:34);state.pitch=alternative?10+Math.sin(now*.0008)*14:9+Math.sin(now*.0008)*14;updateInputs();}
+  if(state.mount&&state.mountVariant==='plywood'){for(const axis of ['yaw','pitch']){$('plywood-'+axis).value=state[axis];$('plywood-'+axis+'-value').textContent=`${degrees(state['actual'+axis[0].toUpperCase()+axis.slice(1)])}°`;}}
   state.actualYaw+=(state.yaw-state.actualYaw)*smooth;state.actualPitch+=(finalPitch()-state.actualPitch)*smooth;state.actualExplode+=(state.explode-state.actualExplode)*smooth;
   const aligned=isAligned(),firing=now-state.shotTime<1100;
   if(state.shotPending&&!firing){state.shotPending=false;if(!state.mount&&state.phase===6){$('mcu-badge').textContent='READY';$('mcu-message').textContent='Simulated shot complete. Waiting for another confirmation.';$('step-title').textContent='Foam shot complete.';$('step-detail').textContent='Choose another target, replay the steps, or confirm another simulated shot.';}}
@@ -470,7 +602,13 @@ function animate(now){
       target.halo.scale.setScalar(hit?1.15:1);
       updateProjectedLabel(target.label,target.root.position.clone().add(new THREE.Vector3(0,.74,0)));
     }
-    if(state.mount){
+    if(state.mount&&state.mountVariant==='plywood'){
+      updatePlywood();const p=parts.plywood;p.root.updateWorldMatrix(true,true);
+      const spread=Math.min(viewport.clientWidth/1000,1);
+      updateProjectedLabel($('cradle-label'),p.yaw.localToWorld(new THREE.Vector3(-1.5,1.3,-1.3)),-200*spread,0);
+      updateProjectedLabel($('pivot-label'),p.yaw.localToWorld(new THREE.Vector3(.4,2.6,1.6)),195*spread,60);
+      updateProjectedLabel($('base-label'),new THREE.Vector3(.45,.3,1.85),1,32);
+    }else if(state.mount){
       updateProjectedLabel($('cradle-label'),localPoint(-2.3,-.2,1.4));
       updateProjectedLabel($('pivot-label'),new THREE.Vector3(.45,yawGroup.position.y+mountSpec.pitchHeight,1.8).applyAxisAngle(upAxis,yawGroup.rotation.y));
       updateProjectedLabel($('base-label'),new THREE.Vector3(.4,.12,1.7));
