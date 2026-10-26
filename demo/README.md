@@ -56,8 +56,14 @@ The team has a micro:bit, cables, resistors, access to a 3D printer and existing
 
 ## Railway hosting
 
+Live demo: https://clickshot-demo-production.up.railway.app
+
+The initial deployment uses the Railway CLI. GitHub automatic deployment is **not connected yet** because the existing Railway GitHub integration could not access this repository.
+
 Deploy the GitHub repository `aiden-lee11/clickshot`, branch `main`, with service **Root Directory** `/demo` and **Railway Config File** `/demo/railway.json`. Railpack installs the locked dependencies and runs `npm start`. Set `NODE_ENV=production`; Railway supplies `PORT`. Health checks request `/`. No database or application secrets are needed.
 
-When the service is connected to GitHub with automatic deployments enabled, pushing changes to `main` updates the shared demo. Run `npm run check` before pushing. For a manual deployment from the linked repository root, run `railway up`.
+When the service is connected to GitHub with automatic deployments enabled, pushing changes to `main` updates the shared demo. Run `npm run check` before pushing. For a manual deployment from the linked repository root, run `railway up demo --path-as-root --service clickshot-demo`. This uploads only the demo folder as the deployment root; keep Root Directory unset for this CLI workflow. Run `railway link` first on another computer and select the Clickshot project.
+
+To enable automatic deployments later, grant the Railway GitHub app access to this repository, connect the service to `aiden-lee11/clickshot` on `main`, and set the GitHub service Root Directory to `/demo` with config path `/demo/railway.json`. Do not use the folder-as-root CLI upload after setting that GitHub root directory.
 
 Reference: [Railway monorepo settings](https://docs.railway.com/deployments/monorepo) and [GitHub automatic deployments](https://docs.railway.com/deployments/github-autodeploys).
