@@ -51,18 +51,20 @@ The separate **View plywood shopping list** button in the alternative tab opens 
 | 1 batch | [Mounting screws, nuts + washers](https://boltdepot.com/Catalog) | $8 / batch allowance | $8.00 est. | Check Ford first |
 | 1 set | [Pitch pushrod + two joint ends](https://www.servocity.com/linkages-threaded-rods/) | $10 / set allowance | $10.00 est. | Budget to buy / quote |
 | 1 roll | [Straps + reused soft pads](https://www.velcro.com/products/organization/heavy-duty-one-wrap-roll/) | $8 / roll allowance | $8.00 est. | Budget to buy / quote |
-| 1 batch | [Small printed adapters](https://design.northwestern.edu/about/design-facilities/corner-makery.html) | $10 / batch allowance | $10.00 est. | Budget to buy / quote |
+| 1 batch | Small printed adapters | Printer access + existing filament | $0.00 — owned | No new printing purchase |
 
 | Budget case | Estimated cost |
 |---|---:|
 | Listed-price subtotal | $84.93 |
-| Planning allowances | $41.00 |
-| **Buy materials + print allowance** | **$125.93** |
-| **If Ford supplies tagged wood + common hardware at no project charge** | **$91.42** |
+| Planning allowances | $31.00 |
+| **Buy other mount materials; owned printing supplies** | **$115.93** |
+| **If Ford supplies tagged wood + common hardware at no project charge** | **$81.42** |
 
-Both totals include two candidate aiming servos. The $41 allowance comprises $5 riser wood, $8 mounting fasteners, $10 pitch linkage, $8 strap roll and $10 printing/material. The $10 printing allowance is not a Ford quote, full-spool purchase or known print mass. Replace it with a quote for the actual files.
+Both totals include two candidate aiming servos. **Printer access and existing filament are covered, at $0 new spend.** The $31 allowance comprises $5 riser wood, $8 mounting fasteners, $10 pitch linkage and $8 strap roll. Confirm suitable existing print material, fit and orientation before fabrication; no print mass is assumed.
 
-The Ford case subtracts $34.51: plywood $14.72, riser wood $5.00, brackets $4.77, pivot bolts/nuts/washers $2.02 and general fasteners $8.00. None of that stock is confirmed free; inspect quantities, condition and dimensions with staff. This detailed shopping budget replaces the earlier rough $25–40 structural allowance. Printing and linkage selection remain unresolved costs.
+The Ford case subtracts $34.51: plywood $14.72, riser wood $5.00, brackets $4.77, pivot bolts/nuts/washers $2.02 and general fasteners $8.00. None of that stock is confirmed free; inspect quantities, condition and dimensions with staff. Straps remain budgeted in both cases.
+
+For the original printed mount under these same assumptions, other purchases total **$98.36**, or **$71.42** if Ford supplies its plywood and common fasteners at no project charge. The plywood alternative's extra $10 pitch-linkage allowance accounts for the difference between the Ford cases. Its main benefit is simpler fabrication; lower purchase cost is not established.
 
 Borrow/reuse two suitable table clamps, soft pads, tools and servo-supplied horns/screws; add their cost if unavailable. Mounting fastener quantities/lengths follow final stack dimensions: 4 long and 4 short #6 fasteners for the turntable, plus upright-bracket, bearing-holder and servo-adapter fixings. Do not assume supplied wood screws suit the plywood thickness.
 
@@ -81,6 +83,6 @@ Totals exclude tax, shipping, the blaster, webcam, range sensor, motor drivers a
 
 - [Corner Makery](https://design.northwestern.edu/about/design-facilities/corner-makery.html): publishes access to scrap under the Carvey mill, Bambu X1 Carbon printers and supplied filament. Stock sizes, PETG availability and any project charges remain unconfirmed.
 - [Prototyping and Fabrication Lab](https://design.northwestern.edu/about/design-facilities/prototyping-lab.html): woodworking, hand tools, measurement equipment, staff help and fabrication materials primarily for class projects. Orientation is required. No public fastener inventory guarantees the needed sizes for free.
-- [Rapid Prototyping Lab](https://make.northwestern.edu/facilties/machine-shops-prototyping-labs/rapid-prototyping-3d-printing-lab.html): professional printing is a charged service; obtain a quote rather than assuming all Ford printing is free.
+- [Rapid Prototyping Lab](https://make.northwestern.edu/facilties/machine-shops-prototyping-labs/rapid-prototyping-3d-printing-lab.html): professional printing is a charged service, but it is not included in this budget because the team has printer access and existing filament.
 
 The prototype remains an assembly concept. The original printed model and its purchase list are preserved for comparison.

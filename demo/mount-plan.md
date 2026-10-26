@@ -46,7 +46,7 @@ Use existing equivalent hardware where available. Links are supplier references 
 | Supplied with servo / as required | Servo tab screws, matching horns and horn screws | Use the servo-supplied screws where appropriate. Any additional small fasteners depend on the selected servo and printed adapters. |
 | 1 offcut/panel | [1/2-inch birch plywood project panel](https://www.homedepot.com/p/311925833) | Cut the proposed 360 × 300 mm base; reuse a suitable offcut if available. |
 | 2 lengths | [VELCRO ONE-WRAP heavy-duty roll](https://www.velcro.com/products/organization/heavy-duty-one-wrap-roll/) | Cut after measuring the shell circumference. Add reused soft pads under the saddles. |
-| Existing filament / 1 spool if needed | [Polymaker PETG](https://polymaker.com/product/polymaker-petg) | Printed cheeks, cradle, risers, bearing retainers and servo adapters. No strength or print-orientation validation has been performed. |
+| Printer access + existing spools | Printing supplies — $0 new spend | PETG is the planned material; confirm a suitable existing material before printing cheeks, cradle, risers, bearing retainers and servo adapters. No strength or print-orientation validation has been performed. |
 
 The mount list does not include the existing blaster, microcontroller, range sensor, camera, MOSFET circuit or servo power system. The servo supply must match the selected servo voltage and combined measured peak current; it is not powered through the laptop USB port. The simulation's dimensions and candidate servos do not validate the electrical system.
 
@@ -64,16 +64,18 @@ The mount list does not include the existing blaster, microcontroller, range sen
 | About 8 screws + nuts | [#6-32 mounting hardware](https://boltdepot.com/BrowseList?F_Head_style=Pan&F_Thread_count=32) | $4.00 allowance; final lengths TBD | **$4.00 est.** |
 | 1 panel | [1/2-inch 2 × 2 ft birch plywood panel](https://www.homedepot.com/p/311925833) | $14.72 / panel | $14.72 |
 | 1 roll → 2 straps | [ONE-WRAP roll](https://www.velcro.com/products/organization/heavy-duty-one-wrap-roll/) | $8.00 allowance / roll | **$8.00 est.** |
-| 1 × 1 kg spool | [PETG filament](https://polymaker.com/product/polymaker-petg) | $25.00 full-spool allowance | **$25.00 est.** |
+| Printer access + existing spools | Printing supplies | $0 new spend | **$0.00 — owned** |
 
 | Budget case | Estimated materials cost |
 |---|---:|
 | Listed-price subtotal | $83.36 |
-| Prototype allowances ($3 M4 hardware + $4 #6 hardware + $8 straps + $25 PETG) | $40.00 |
-| **Buy all listed materials** | **$123.36** |
-| **Reuse plywood, straps and PETG** | **$75.64** |
+| Prototype allowances ($3 M4 hardware + $4 #6 hardware + $8 straps) | $15.00 |
+| **Buy other mount materials; owned printing supplies** | **$98.36** |
+| **If Ford supplies plywood + common fasteners at no project charge** | **$71.42** |
 
-The buy-all estimate exceeds the original $120 project allowance by $3.36 **before tax, shipping or other project purchases**. Reusing materials removes $47.72 of new purchases. Full panel, roll and spool purchase costs are included; the actual print mass is not yet known, and a one-spool allowance does not establish that all prints will fit within 1 kg. Strap and filament amounts are budget allowances, not verified prices for a selected size/color.
+Both cases assume access to a 3D printer and already-owned filament at **$0 new spend**, per the project assumptions. Straps remain budgeted in both cases. The conditional Ford case subtracts $26.94: plywood $14.72 plus pivot and general mounting fasteners $12.22. Equivalent stock and any charges must be confirmed with staff. A full plywood panel and strap roll are budgeted in the first case; print mass remains unknown.
+
+For a consistent comparison using these same assumptions, the plywood alternative totals **$115.93** for other purchases or **$81.42** if Ford covers its wood and common hardware. Its additional $10 pitch-linkage allowance accounts for the difference between the two Ford cases. Easier fabrication does not establish lower purchased-part cost.
 
 These totals cover only the candidate mount list. They exclude the blaster, microcontroller, camera, range sensor, MOSFET circuit and servo power system. Tools, table clamps and soft pads are assumed available; servo horns and small servo screws are assumed supplied. Any extra adapters or fasteners must be added after CAD and a hardware check. Prices are not a stock guarantee or an order quotation.
 

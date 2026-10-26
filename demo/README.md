@@ -34,7 +34,7 @@ The model distinguishes matte printed parts, bought metal hardware, and a plywoo
 - [LILY Bearing: lazy-Susan bearing examples](https://www.lily-bearing.com/product/applications/lazy-susan-bearings/)
 - [Adafruit: standard metal-gear servo example](https://www.adafruit.com/product/1142)
 
-These are component examples, not a validated purchase list or a claim that a particular servo will carry this blaster. No prices or load ratings are assumed in the mock.
+These are component examples, not a validated purchase list or a claim that a particular servo will carry this blaster. The linked shopping lists distinguish listed prices from planning allowances; the mock does not validate load ratings.
 
 ## Source
 
@@ -49,3 +49,7 @@ The embedded stage has larger live readings and a dedicated before/trim/after pi
 ## Plywood mount alternative
 
 The **Plywood alternative** tab adds a separate assembly while preserving the original printed mount. It uses a plywood deck/uprights/open cradle, ordinary angle brackets, a bought yaw bearing, supported pitch pivots and small printed adapters. Yaw/pitch sliders, an automatic sweep and the shared exploded-view control demonstrate both axes. The pitch crank/pushrod stays connected in the assembled animation. See `plywood-mount-plan.md` for provisional dimensions, parts, Ford-resource assumptions and assembly notes. This is a concept mock, not validated CAD or a load-tested mechanism.
+
+## Shared budget assumptions
+
+The team has a micro:bit, cables, resistors, access to a 3D printer and existing filament spools. Printing is $0 new spend for both mount options. Both lists keep straps budgeted and show the same two cases: purchase other mount materials, or conditionally obtain wood/common hardware from Ford at no charge. Ford stock remains unconfirmed. Original mount: $98.36 / $71.42; plywood alternative: $115.93 / $81.42. Both include two aiming servos and exclude the rest of the electrical system, tax and shipping.
