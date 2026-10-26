@@ -33,7 +33,40 @@ Show limited travel first: yaw ±30°, pitch −5° to +25°. The automatic swee
 | Straps and soft pads | 2 straps / 4 pads | Reuse suitable material or buy a roll |
 | Small printed adapters | As needed | Confirm material, fit, print orientation and fees with Ford |
 
-**Planning allowance:** roughly $25–40 for structure/hardware, plus the two servos, assuming suitable plywood and common fasteners are available at no project charge. This is not a priced final BOM. It excludes electronics, power, printing fees, shipping and tax. The micro:bit, cables and resistors are class-provided per the project assumptions; do not buy those again. Keep purchased bearings, spacers, linkage hardware and servo power in the budget until availability is confirmed.
+## Shopping list — USD snapshot, October 26, 2026
+
+The separate **View plywood shopping list** button in the alternative tab opens this BOM. Supplier prices are snapshots, not stock guarantees. Estimates marked **est.** are planning allowances. Candidate items still need fit/torque checks; the linkage catalog is not a final fitted kit.
+
+| Qty | Item / supplier | Unit / pack | Line cost | Sourcing |
+|---|---|---|---:|---|
+| 2 | [Positional metal-gear servos](https://www.adafruit.com/product/1142) | $19.95 each | $39.90 | Budget to buy / quote |
+| 1 | [4-inch square turntable bearing](https://www.rockler.com/low-profile-lazy-susans) | $5.99 each | $5.99 | Budget to buy / quote |
+| 2 | [608ZZ pitch bearings](https://vxb.com/products/mr608-zz-ball-bearing-double-shielded-bore-di) | $7.77 each | $15.54 | Budget to buy / quote |
+| 1 pack | [8 × 12 × 10 mm steel spacers](https://www.servocity.com/8mm-id-steel-spacer-12mm-od-10mm-length-4-pack/) | $1.99 / pack | $1.99 | Budget to buy / quote |
+| 2 | [M8 × 40 mm pivot bolts](https://boltdepot.com/Product-Details?product=5817) | $0.68 each | $1.36 | Check Ford first |
+| 2 + 4 | [M8 locknuts](https://boltdepot.com/Product-Details?product=4797) + [washers](https://boltdepot.com/Product-Details?product=4518) | $0.17 nut / $0.08 washer | $0.66 | Check Ford first |
+| 1 panel | [1/2-inch birch plywood](https://www.homedepot.com/p/311925833) | $14.72 / panel | $14.72 | Check Ford first |
+| 4 blocks | [Wood riser stock](https://design.northwestern.edu/about/design-facilities/prototyping-lab.html) | $5 / batch allowance | $5.00 est. | Check Ford first |
+| 1 pack | [2-inch steel angle brackets](https://www.homedepot.com/p/327600254) | $4.77 / pack | $4.77 | Check Ford first |
+| 1 batch | [Mounting screws, nuts + washers](https://boltdepot.com/Catalog) | $8 / batch allowance | $8.00 est. | Check Ford first |
+| 1 set | [Pitch pushrod + two joint ends](https://www.servocity.com/linkages-threaded-rods/) | $10 / set allowance | $10.00 est. | Budget to buy / quote |
+| 1 roll | [Straps + reused soft pads](https://www.velcro.com/products/organization/heavy-duty-one-wrap-roll/) | $8 / roll allowance | $8.00 est. | Budget to buy / quote |
+| 1 batch | [Small printed adapters](https://design.northwestern.edu/about/design-facilities/corner-makery.html) | $10 / batch allowance | $10.00 est. | Budget to buy / quote |
+
+| Budget case | Estimated cost |
+|---|---:|
+| Listed-price subtotal | $84.93 |
+| Planning allowances | $41.00 |
+| **Buy materials + print allowance** | **$125.93** |
+| **If Ford supplies tagged wood + common hardware at no project charge** | **$91.42** |
+
+Both totals include two candidate aiming servos. The $41 allowance comprises $5 riser wood, $8 mounting fasteners, $10 pitch linkage, $8 strap roll and $10 printing/material. The $10 printing allowance is not a Ford quote, full-spool purchase or known print mass. Replace it with a quote for the actual files.
+
+The Ford case subtracts $34.51: plywood $14.72, riser wood $5.00, brackets $4.77, pivot bolts/nuts/washers $2.02 and general fasteners $8.00. None of that stock is confirmed free; inspect quantities, condition and dimensions with staff. This detailed shopping budget replaces the earlier rough $25–40 structural allowance. Printing and linkage selection remain unresolved costs.
+
+Borrow/reuse two suitable table clamps, soft pads, tools and servo-supplied horns/screws; add their cost if unavailable. Mounting fastener quantities/lengths follow final stack dimensions: 4 long and 4 short #6 fasteners for the turntable, plus upright-bracket, bearing-holder and servo-adapter fixings. Do not assume supplied wood screws suit the plywood thickness.
+
+Totals exclude tax, shipping, the blaster, webcam, range sensor, motor drivers and power supplies. The micro:bit, cables and resistors are class-provided. This list is an alternative to the original BOM; do not buy both mount lists or count their servos twice.
 
 ## Assembly sequence
 

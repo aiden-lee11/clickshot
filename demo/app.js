@@ -520,6 +520,9 @@ $('range').addEventListener('input',e=>{
 $('compensation').addEventListener('change',e=>{state.compensation=e.target.checked;if(state.phase>=6)showPhase(6);updateInputs();});
 $('fire').addEventListener('click',()=>fire());$('clap').addEventListener('click',()=>fire('clap'));
 $('replay-trim').addEventListener('click',()=>{if(state.selected!==null)showPhase(6);});
+$('open-plywood-parts').addEventListener('click',()=>$('plywood-parts-dialog').showModal());
+$('close-plywood-parts').addEventListener('click',()=>$('plywood-parts-dialog').close());
+$('plywood-parts-dialog').addEventListener('click',e=>{if(e.target===$('plywood-parts-dialog'))$('plywood-parts-dialog').close();});
 $('open-parts').addEventListener('click',()=>$('parts-dialog').showModal());
 $('close-parts').addEventListener('click',()=>$('parts-dialog').close());
 $('parts-dialog').addEventListener('click',e=>{if(e.target===$('parts-dialog'))$('parts-dialog').close();});
