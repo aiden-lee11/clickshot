@@ -38,7 +38,7 @@ These are component examples, not a validated purchase list or a claim that a pa
 
 ## Source
 
-`index.html` contains the split presentation interface; `style.css` the responsive layout; `app.js` the procedural Three.js model, target coordinates and walkthrough state machine; `server.mjs` serves only on loopback. Three.js is pinned in the package lock and served locally. The app makes no remote runtime requests. Reference links only open when clicked.
+`index.html` contains the split presentation interface; `style.css` the responsive layout; `app.js` the procedural Three.js model, target coordinates and walkthrough state machine; `server.mjs` serves on loopback locally, and on `0.0.0.0` in production using Railway’s `PORT`. Only presentation assets, build notes and Three.js modules are public. Three.js is pinned in the package lock and served locally. The app makes no remote runtime requests. Reference links only open when clicked.
 
 ## Rapidstrike and second-stage presentation revision
 
@@ -53,3 +53,11 @@ The **Plywood alternative** tab adds a separate assembly while preserving the or
 ## Shared budget assumptions
 
 The team has a micro:bit, cables, resistors, access to a 3D printer and existing filament spools. Printing is $0 new spend for both mount options. Both lists keep straps budgeted and show the same two cases: purchase other mount materials, or conditionally obtain wood/common hardware from Ford at no charge. Ford stock remains unconfirmed. Original mount: $98.36 / $71.42; plywood alternative: $115.93 / $81.42. Both include two aiming servos and exclude the rest of the electrical system, tax and shipping.
+
+## Railway hosting
+
+Deploy the GitHub repository `aiden-lee11/clickshot`, branch `main`, with service **Root Directory** `/demo` and **Railway Config File** `/demo/railway.json`. Railpack installs the locked dependencies and runs `npm start`. Set `NODE_ENV=production`; Railway supplies `PORT`. Health checks request `/`. No database or application secrets are needed.
+
+When the service is connected to GitHub with automatic deployments enabled, pushing changes to `main` updates the shared demo. Run `npm run check` before pushing. For a manual deployment from the linked repository root, run `railway up`.
+
+Reference: [Railway monorepo settings](https://docs.railway.com/deployments/monorepo) and [GitHub automatic deployments](https://docs.railway.com/deployments/github-autodeploys).
