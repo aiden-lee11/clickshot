@@ -3,6 +3,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { createCompactMount, compactSpec, printedVolumeProxy } from './compact-mount.js';
 import { createRecommendedMount, recommendedSpec } from './recommended-mount.js';
+import { initRecommendedShopping } from './recommended-shopping.js';
+
+initRecommendedShopping();
 
 const $ = id => document.getElementById(id);
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));

@@ -39,3 +39,7 @@ If inverted operation is unreliable, revise the upright height and clearances fo
 The three earlier mount scenes, their shopping lists and the original printed-mount CAD pack remain separate references. Their totals and CAD dimensions are **not** a quote or released geometry for this hybrid. This mock establishes the recommended construction approach; it does not establish loaded strength, servo torque, stability, physical travel limits or complete collision clearance.
 
 Component references already used in the project: [Rockler turntable](https://www.rockler.com/low-profile-lazy-susans), [Adafruit positional-servo example](https://www.adafruit.com/product/1142). Actual loaded requirements determine the final selections. No hardware is purchased by creating this mock.
+
+## Complete shopping list
+
+See [the recommended-build shopping list](recommended-shopping-list.md) for mount, sensing, power, switching and demo purchases, with current supplier links, conditional Ford savings and separately identified allowances. It assumes the donor blaster/webcam mentioned in the project notes are reused; replacement budgets are separate. The earlier mount totals remain separate. Final torque, fit and motor-current checks can change this candidate BOM.

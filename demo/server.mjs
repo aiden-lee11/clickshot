@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const types = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.md':'text/plain; charset=utf-8', '.csv':'text/csv; charset=utf-8', '.stl':'model/stl', '.step':'application/step', '.zip':'application/zip' };
-const publicFiles = new Set(['/index.html', '/app.js', '/style.css', '/stage-two.css', '/plywood.css', '/mount-plan.md', '/plywood-mount-plan.md', '/compact-mount.js', '/compact.css', '/compact-mount-plan.md', '/recommended-mount.js', '/recommended.css', '/recommended-mount-plan.md']);
+const publicFiles = new Set(['/index.html', '/app.js', '/style.css', '/stage-two.css', '/plywood.css', '/mount-plan.md', '/plywood-mount-plan.md', '/compact-mount.js', '/compact.css', '/compact-mount-plan.md', '/recommended-mount.js', '/recommended.css', '/recommended-mount-plan.md', '/recommended-shopping.js', '/recommended-shopping-list.md']);
 const host = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
 const server = http.createServer(async (req, res) => {
   try {

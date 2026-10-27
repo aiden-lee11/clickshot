@@ -81,3 +81,9 @@ The **Compact inverted** tab adds a third material-first mount mock. The receive
 The top navigation now has **Walkthrough** and **Mount builds**. A selector and previous/next arrows switch among the four assemblies: Original printed, Plywood frame, Compact inverted and Recommended hybrid. Direct links use `#original`, `#plywood`, `#compact` and `#recommended`.
 
 The recommended mock shares the illustrative trimmed receiver with the compact model, but uses solid flat plywood uprights/deck, small printed bearing housings, bought pitch bearings, wood risers and coaxial yaw underneath. It has one pitch linkage. See `recommended-mount-plan.md`; this concept does not replace or update the earlier CAD pack or price lists.
+
+## Recommended-build shopping list
+
+Open **Mount builds → Recommended hybrid → View complete shopping list**. The dialog covers mount/movement, sensing/interfaces, power/blaster switching, and demo consumables. `recommended-shopping.js` is the single source for quantities, integer-cent prices, estimates and conditional Ford savings. `node scripts/build-shopping-list.mjs` regenerates the downloadable `recommended-shopping-list.md`; run it after changing the data. The app serves both locally without external runtime requests.
+
+This is a complete candidate BOM, unlike the earlier mount-only lists. It assumes reuse of the donor Rapidstrike/magazine/tray and webcam named in the project notes; conditional replacement allowances are excluded. Micro:bit, class signal/USB cables, resistors, printer and filament are covered. Motor power wire and specialized connections are budgeted separately. Supply/driver ratings, pivot hardware, linkage and servo torque require physical selection checks; the recommended mock is not fabrication CAD.
