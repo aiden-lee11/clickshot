@@ -71,3 +71,7 @@ Reference: [Railway monorepo settings](https://docs.railway.com/deployments/mono
 ## Prototype CAD
 
 Open `/cad/` for the CAD-mesh viewer, exported STEP assembly, print-oriented STLs and source ZIP. The generator and editable dimensions live in `cad/generate.py` and `cad/parameters.json`. Read `cad/README.md` before fabrication. The CAD is a fit draft of the printed mount, with an external pitch linkage and optional replacement sleeves, while both presentation concepts remain preserved. Its provisional hardware schedule differs from the original concept shopping list; existing shopping totals are not quotes for the CAD revision.
+
+## Compact inverted concept
+
+The **Compact inverted** tab adds a third material-first mount mock. The receiver is shortened and inverted, with the magazine above, two short cutout cheeks, light saddles/rails, a web deck and side-driven yaw. The existing printed/plywood scenes and earlier CAD pack are preserved. `compact-mount.js` owns the new procedural assembly and crank/rod closures; `compact.css` its presentation. See `compact-mount-plan.md` for the proposed 100 mm pitch height, 260 × 220 mm base, material-proxy methodology and unresolved balance/inverted-feeding checks. The on-screen plastic-volume reduction compares rendered print-material geometry against the original scene, not slicer filament or CAD strength. This concept has no new fabrication CAD.

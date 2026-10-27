@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { createCompactMount, compactSpec, printedVolumeProxy } from './compact-mount.js';
 
 const $ = id => document.getElementById(id);
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 const rad = THREE.MathUtils.degToRad;
 const degrees = value => (Math.abs(value)<.05 ? 0 : value).toFixed(1);
-const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'original', explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
+const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'original', compactRemoved: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
 const targets = [{ name:'A', yaw:-22, pitch:6, range:2.2 }, { name:'B', yaw:12, pitch:18, range:3.6 }, { name:'C', yaw:26, pitch:-3, range:2.8 }];
 let renderer, scene, camera, controls, yawGroup, pitchGroup, cradle, bearingDeck, sightLine, com, yawArc, pitchArc, projectile, lastFrame = 0;
 // Mount units: one scene unit = 100 mm. Overall blaster length is source-based;
@@ -199,6 +200,11 @@ function initScene() {
   com=new THREE.Group();pitchGroup.add(com);ring(com,.105,.014,0,0,.65,mat.lime,'z');line(com,[[-.18,0,.65],[.18,0,.65]],'#b2da72');line(com,[[0,-.18,.65],[0,.18,.65]],'#b2da72');com.visible=false;
   sightLine=line(scene,[[0,0,0],[1,0,0]],'#df783d',.85);
   buildPlywoodAlternative();
+  parts.compact=createCompactMount(scene,{box,cylinder,ring,line,mat,material});
+  const originalVolume=printedVolumeProxy(parts.assembly,mat.print),compactVolume=printedVolumeProxy(parts.compact.root,mat.print);
+  parts.compact.metrics={originalVolumeCM3:originalVolume,compactVolumeCM3:compactVolume,reductionPercent:Math.round((1-compactVolume/originalVolume)*100)};
+  $('compact-volume').textContent=`−${parts.compact.metrics.reductionPercent}%`;
+  $('compact-volume-note').textContent=`${Math.round(compactVolume)} vs ${Math.round(originalVolume)} cm³ modeled solid plastic. This compares scene geometry, not sliced filament or strength.`;
   buildRange();
   projectile=new THREE.Group();cylinder(projectile,.055,.055,.35,0,0,0,mat.teal,'x');cylinder(projectile,.06,.06,.08,.2,0,0,mat.orange,'x');scene.add(projectile);projectile.visible=false;
   const ro=new ResizeObserver(resize);ro.observe(viewport);setView();
@@ -368,11 +374,11 @@ function buildRange(){
 }
 function resize(){
   if(!renderer)return;const w=viewport.clientWidth,h=viewport.clientHeight;renderer.setSize(w,h);
-  const aspect=w/h;const vertical=state.mount?(aspect<1?4.8:3.8):Math.max(5.0,8.0/aspect);
+  const aspect=w/h;const compact=state.mount&&state.mountVariant==='compact';const vertical=compact&&!state.compactRemoved?(aspect<1?3.5:2.4):state.mount?(aspect<1?4.8:3.8):Math.max(5.0,8.0/aspect);
   camera.left=-vertical*aspect;camera.right=vertical*aspect;camera.top=vertical;camera.bottom=-vertical;camera.updateProjectionMatrix();
 }
 function setView(side=false){
-  const center=state.mount?new THREE.Vector3(0,2.3,0):new THREE.Vector3(3.3,3.2,.1);
+  const center=state.mount?new THREE.Vector3(0,state.mountVariant==='compact'?1.45:2.3,0):new THREE.Vector3(3.3,3.2,.1);
   const direction=state.mount?(side?new THREE.Vector3(0,1.1,12):new THREE.Vector3(7,4.8,8.5)):(side?new THREE.Vector3(-1,3.7,14):new THREE.Vector3(-8,6.5,12));
   controls.target.copy(center);camera.position.copy(center).add(direction);camera.zoom=1;resize();controls.update();
   $('iso-view').classList.toggle('selected',!side);$('side-view').classList.toggle('selected',side);
@@ -453,20 +459,22 @@ function fire(source='button'){
   }
 }
 function switchMode(mount,variant='original'){
+  history.replaceState(null,'',mount?'#'+variant:location.pathname+location.search);
   state.mount=mount;state.mountVariant=variant;state.paused=false;state.actualExplode=0;state.actualYaw=0;state.actualPitch=0;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
   $('demo-controls').hidden=mount;$('mount-controls').hidden=!mount;$('mount-labels').hidden=!mount;$('target-labels').hidden=mount;$('walkthrough').hidden=mount;$('mount-footer').hidden=!mount;
   document.querySelector('.world-pane').classList.toggle('mount-mode',mount);
-  const alternative=mount&&variant==='plywood';
-  for(const [id,active]of [['demo-tab',!mount],['mount-tab',mount&&!alternative],['plywood-tab',alternative]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-selected',String(active));}
-  $('original-mount-summary').hidden=alternative;$('original-mount-notes').hidden=alternative;
+  const alternative=mount&&variant==='plywood',compact=mount&&variant==='compact';
+  for(const [id,active]of [['demo-tab',!mount],['mount-tab',mount&&variant==='original'],['plywood-tab',alternative],['compact-tab',compact]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-selected',String(active));}
+  $('original-mount-summary').hidden=alternative||compact;$('original-mount-notes').hidden=alternative||compact;
   $('plywood-summary').hidden=!alternative;$('plywood-notes').hidden=!alternative;
-  document.body.dataset.mountVariant=alternative?'plywood':'original';
-  if(parts.plywood){parts.assembly.visible=!alternative;parts.plywood.root.visible=alternative;}
-  $('cradle-label').textContent=alternative?'Flat plywood + angle brackets':'140 mm inner gap · proposed';
-  $('pivot-label').textContent=alternative?'Bearing-supported pitch pivots':'250 mm pivot height · proposed';
-  $('base-label').textContent=alternative?'Bought turntable · yaw':'360 × 300 mm plywood · proposed';
-  $('mount-footer').innerHTML=alternative?'<span><i class="wood-dot"></i>Scrap plywood frame</span><span><i class="buy-dot"></i>Bought bearings + brackets</span><span><i class="print-dot"></i>Small printed adapters</span><span>Concept · measure before cutting</span>':'<span><i class="print-dot"></i>Printed PETG parts</span><span><i class="buy-dot"></i>Bought hardware</span><span>Allen keys · screwdriver · drill · 3D printer</span><span>No custom metal machining.</span>';
-  $('world-title').textContent=mount?(alternative?'Plywood alternative':'Printed + off-the-shelf'):'Physical system';$('world-subtitle').textContent=mount?(alternative?'Flat cuts. Supported weight. Two axes.':'Supported pivots. Ordinary tools.'):'Same targets. Real movement.';
+  $('compact-summary').hidden=!compact;$('compact-notes').hidden=!compact;
+  document.body.dataset.mountVariant=compact?'compact':alternative?'plywood':'original';
+  if(parts.plywood){parts.assembly.visible=!alternative&&!compact;parts.plywood.root.visible=alternative;parts.compact.root.visible=compact;}
+  $('cradle-label').textContent=compact?'Magazine up · functional core retained':alternative?'Flat plywood + angle brackets':'140 mm inner gap · proposed';
+  $('pivot-label').textContent=compact?'100 mm pitch axis · proposed':alternative?'Bearing-supported pitch pivots':'250 mm pivot height · proposed';
+  $('base-label').textContent=compact?'Side-driven yaw · no raised platform':alternative?'Bought turntable · yaw':'360 × 300 mm plywood · proposed';
+  $('mount-footer').innerHTML=compact?'<span><i class="print-dot"></i>Short cutout frame</span><span><i class="buy-dot"></i>Bought bearing + two servo linkages</span><span>Clamped base · magazine above receiver</span><span>Material concept · fit / strength untested</span>':alternative?'<span><i class="wood-dot"></i>Scrap plywood frame</span><span><i class="buy-dot"></i>Bought bearings + brackets</span><span><i class="print-dot"></i>Small printed adapters</span><span>Concept · measure before cutting</span>':'<span><i class="print-dot"></i>Printed PETG parts</span><span><i class="buy-dot"></i>Bought hardware</span><span>Allen keys · screwdriver · drill · 3D printer</span><span>No custom metal machining.</span>';
+  $('world-title').textContent=mount?(compact?'Only the load path.':alternative?'Plywood alternative':'Printed + off-the-shelf'):'Physical system';$('world-subtitle').textContent=mount?(compact?'Inverted core. Short frame. Open access.':alternative?'Flat cuts. Supported weight. Two axes.':'Supported pivots. Ordinary tools.'):'Same targets. Real movement.';
   $('world-help').textContent=mount?'Drag to inspect · Scroll to zoom':'Drag to orbit · Click a target';
   $('mount-sweep').textContent='↔ Move both axes';$('explode').value=0;$('explode-value').textContent='0%';
   document.querySelector('.laptop-pane').scrollTop=0;if(com)com.visible=mount;showPhase(0);setView();
@@ -531,8 +539,10 @@ $('pause').addEventListener('click',()=>{state.paused=!state.paused;$('pause').t
 for(const button of document.querySelectorAll('[data-step]'))button.addEventListener('click',()=>{
   const n=Number(button.dataset.step);if(state.selected===null){if(n===1)pickTarget(1);return;}showPhase(n);
 });
-$('demo-tab').addEventListener('click',()=>switchMode(false));$('mount-tab').addEventListener('click',()=>switchMode(true));$('plywood-tab').addEventListener('click',()=>switchMode(true,'plywood'));
+$('demo-tab').addEventListener('click',()=>switchMode(false));$('mount-tab').addEventListener('click',()=>switchMode(true));$('plywood-tab').addEventListener('click',()=>switchMode(true,'plywood'));$('compact-tab').addEventListener('click',()=>switchMode(true,'compact'));
 for(const axis of ['yaw','pitch'])$('plywood-'+axis).addEventListener('input',e=>{state.sweep=false;state[axis]=Number(e.target.value);$('mount-sweep').textContent='↔ Move both axes';});
+for(const axis of ['yaw','pitch'])$('compact-'+axis).addEventListener('input',e=>{state.sweep=false;state[axis]=Number(e.target.value);$('mount-sweep').textContent='↔ Move both axes';});
+$('compact-removed').addEventListener('change',e=>{state.compactRemoved=e.target.checked;resize();});
 $('iso-view').addEventListener('click',()=>setView());$('side-view').addEventListener('click',()=>setView(true));
 $('home').addEventListener('click',()=>{state.yaw=0;state.pitch=0;state.selected=null;state.sweep=false;state.explode=0;state.trimApplied=0;state.command=null;state.selectionPose={yaw:0,pitch:0};$('explode').value=0;$('explode-value').textContent='0%';$('mount-sweep').textContent='↔ Move both axes';showPhase(0);setView();});
 $('explode').addEventListener('input',e=>{state.explode=Number(e.target.value)/100;$('explode-value').textContent=`${e.target.value}%`;});
@@ -540,7 +550,7 @@ $('mount-sweep').addEventListener('click',()=>{state.sweep=!state.sweep;$('mount
 // Keyboard access keeps the whole presentation usable without a mouse.
 feed.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pickTarget(1);}});
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&!['INPUT','BUTTON','SUMMARY'].includes(document.activeElement.tagName)){e.preventDefault();fire();}});
-document.querySelector('.tabs').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const ids=['demo-tab','mount-tab','plywood-tab'];const current=state.mount?(state.mountVariant==='plywood'?2:1):0;const next=(current+(e.key==='ArrowRight'?1:2))%3;switchMode(next!==0,next===2?'plywood':'original');$(ids[next]).focus();}});
+document.querySelector('.tabs').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const ids=['demo-tab','mount-tab','plywood-tab','compact-tab'];const current=state.mount?({original:1,plywood:2,compact:3}[state.mountVariant]):0;const next=(current+(e.key==='ArrowRight'?1:3))%4;switchMode(next!==0,['original','original','plywood','compact'][next]);$(ids[next]).focus();}});
 function sequence(dt){
   if(state.mount||state.paused||state.phase===0)return;
   state.phaseElapsed+=dt;const t=state.phaseElapsed;
@@ -565,7 +575,8 @@ function updateProjectedLabel(element,position,offsetX=0,offsetY=0){
 function animate(now){
   requestAnimationFrame(animate);const dt=Math.min((now-lastFrame)/1000||.016,.1);lastFrame=now;
   sequence(dt);const smooth=state.paused?0:1-Math.exp(-dt*3.3);
-  if(state.sweep){const alternative=state.mountVariant==='plywood';state.yaw=Math.sin(now*.0005)*(alternative?28:34);state.pitch=alternative?10+Math.sin(now*.0008)*14:9+Math.sin(now*.0008)*14;updateInputs();}
+  if(state.sweep){const compact=state.mountVariant==='compact',alternative=state.mountVariant==='plywood';state.yaw=Math.sin(now*.0005)*(compact?24:alternative?28:34);state.pitch=compact?7.5+Math.sin(now*.0008)*17:alternative?10+Math.sin(now*.0008)*14:9+Math.sin(now*.0008)*14;updateInputs();}
+  if(state.mount&&state.mountVariant==='compact'){for(const axis of ['yaw','pitch']){$('compact-'+axis).value=state[axis];$('compact-'+axis+'-value').textContent=`${degrees(state['actual'+axis[0].toUpperCase()+axis.slice(1)])}°`;}}
   if(state.mount&&state.mountVariant==='plywood'){for(const axis of ['yaw','pitch']){$('plywood-'+axis).value=state[axis];$('plywood-'+axis+'-value').textContent=`${degrees(state['actual'+axis[0].toUpperCase()+axis.slice(1)])}°`;}}
   state.actualYaw+=(state.yaw-state.actualYaw)*smooth;state.actualPitch+=(finalPitch()-state.actualPitch)*smooth;state.actualExplode+=(state.explode-state.actualExplode)*smooth;
   const aligned=isAligned(),firing=now-state.shotTime<1100;
@@ -605,7 +616,13 @@ function animate(now){
       target.halo.scale.setScalar(hit?1.15:1);
       updateProjectedLabel(target.label,target.root.position.clone().add(new THREE.Vector3(0,.74,0)));
     }
-    if(state.mount&&state.mountVariant==='plywood'){
+    if(state.mount&&state.mountVariant==='compact'){
+      const p=parts.compact;p.update({yaw:state.actualYaw,pitch:state.actualPitch,explode:state.actualExplode,showRemoved:state.compactRemoved});p.root.updateWorldMatrix(true,true);
+      const spread=Math.min(viewport.clientWidth/850,1);
+      updateProjectedLabel($('cradle-label'),p.pitch.localToWorld(new THREE.Vector3(-.2,1.1,0)),-135*spread,-20);
+      updateProjectedLabel($('pivot-label'),p.yaw.localToWorld(new THREE.Vector3(0,1,.72)),155*spread,-10);
+      updateProjectedLabel($('base-label'),new THREE.Vector3(-.25,.35,-.86),-100*spread,65);
+    }else if(state.mount&&state.mountVariant==='plywood'){
       updatePlywood();const p=parts.plywood;p.root.updateWorldMatrix(true,true);
       const spread=Math.min(viewport.clientWidth/1000,1);
       updateProjectedLabel($('cradle-label'),p.yaw.localToWorld(new THREE.Vector3(-1.5,1.3,-1.3)),-200*spread,0);
@@ -625,5 +642,7 @@ function animate(now){
   }
 }
 try{initScene();}catch(e){$('scene-error').hidden=false;console.error('Unable to initialize 3D scene:',e);}
-showPhase(0);updateInputs();document.querySelector('.laptop-pane').scrollTop=0;requestAnimationFrame(animate);
-window.clickshot={mountSpec,getState:()=>({...state,aligned:isAligned(),finalPitch:finalPitch(),webgl:!!renderer}),targets};
+showPhase(0);updateInputs();document.querySelector('.laptop-pane').scrollTop=0;
+const initialMount=location.hash.slice(1);if(['original','plywood','compact'].includes(initialMount))switchMode(true,initialMount);
+requestAnimationFrame(animate);
+window.clickshot={mountSpec,compactSpec,compactMetrics:()=>({...parts.compact?.metrics,reachable:parts.compact?.reachable,closureError:parts.compact?.closureError}),getState:()=>({...state,aligned:isAligned(),finalPitch:finalPitch(),webgl:!!renderer}),targets};
