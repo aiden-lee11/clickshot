@@ -95,3 +95,11 @@ The recommended shopping dialog now leads with a conditional **$62.75 parts plan
 `recommended-budget.js` derives the source groups and new purchase subtotals from the original retail data, substituting a $3.99 two-pack of 8×22×7 mm bearings for the $15.54 pair. Regenerate both Markdown files with `node scripts/build-shopping-list.mjs`. See `recommended-budget-plan.md` for sources, exact reconciliation, missing-resource add-backs and retained MVP functions.
 
 Both aiming servos are confirmed owned. Their exact models are unspecified, so their power requirements, mounting pattern and horn spline must be measured before choosing adapters or treating the example 5 V supply as suitable. Ownership reduces the new-purchase budget by the prior $39.90 allowance; it does not identify the servos as the linked Adafruit model.
+
+## Wiring visualization
+
+Enable **Show wiring** under the build selector in **Mount builds**. The same toggle applies to all four assemblies and stays selected while switching builds. It starts off; the walkthrough remains unchanged. Wiring mode replaces dimension callouts with a compact color key and labels the base controller, motor switches, servo power and two separate laptop USB connections.
+
+`build-wiring.js` anchors cable bundles to the fixed base, yaw frame, pitch cradle and blaster in each model. They follow yaw/pitch sweeps and the exploded view, with illustrative service loops at both joints. Servo power/common ground, servo/motor control, range/position feedback, camera/controller USB and both switched blaster motor branches are distinct. The camera USB route returns directly to the laptop rather than through the micro:bit. Light markers illustrate signal direction, not live serial traffic. The overlays and extra base components hide when disabled or in Walkthrough.
+
+The wiring is a routing concept, not an electrical schematic, physical clearance validation, exact wire count/length, selected gauge or final pin mapping. The exploded view stretches routes for presentation. Added base component envelopes and feedback endpoints are provisional. Verify actual owned-servo power requirements and complete the circuit design before assembly. Cable geometry buffers are reused and reshaped only while the pose changes; hidden builds do not update their wiring.

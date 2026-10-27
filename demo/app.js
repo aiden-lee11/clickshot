@@ -4,6 +4,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { createCompactMount, compactSpec, printedVolumeProxy } from './compact-mount.js';
 import { createRecommendedMount, recommendedSpec } from './recommended-mount.js';
 import { initRecommendedShopping } from './recommended-shopping.js';
+import { createBuildWiring } from './build-wiring.js';
 
 initRecommendedShopping();
 
@@ -11,7 +12,7 @@ const $ = id => document.getElementById(id);
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 const rad = THREE.MathUtils.degToRad;
 const degrees = value => (Math.abs(value)<.05 ? 0 : value).toFixed(1);
-const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'recommended', compactRemoved: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
+const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'recommended', compactRemoved: false, wiring: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
 const targets = [{ name:'A', yaw:-22, pitch:6, range:2.2 }, { name:'B', yaw:12, pitch:18, range:3.6 }, { name:'C', yaw:26, pitch:-3, range:2.8 }];
 let renderer, scene, camera, controls, yawGroup, pitchGroup, cradle, bearingDeck, sightLine, com, yawArc, pitchArc, projectile, lastFrame = 0;
 // Mount units: one scene unit = 100 mm. Overall blaster length is source-based;
@@ -196,7 +197,7 @@ function initScene() {
   parts.referencePivot.add(parts.referenceGun);parts.referencePivot.visible=false;
   // Flexible cable service loop follows the rotating structure.
   const cableCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.9,.35,-.43),new THREE.Vector3(-1.1,.05,-.54),new THREE.Vector3(-.8,-.18,-.48),new THREE.Vector3(-.4,.08,-.45)]);
-  const cable=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,30,.027,8,false),mat.black);pitchGroup.add(cable);
+  const cable=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,30,.027,8,false),mat.black);pitchGroup.add(cable);parts.legacyCable=cable;
   // Subtle schematic guides make the two axes legible.
   const yawPoints=[];for(let i=0;i<=70;i++){const a=-1.1+i/70*2.2;yawPoints.push([Math.cos(a)*1.51,.28,Math.sin(a)*1.51]);}
   yawArc=line(assembly,yawPoints,'#df6a39',.7);
@@ -211,6 +212,8 @@ function initScene() {
   parts.compact.metrics={originalVolumeCM3:originalVolume,compactVolumeCM3:compactVolume,reductionPercent:Math.round((1-compactVolume/originalVolume)*100)};
   $('compact-volume').textContent=`−${parts.compact.metrics.reductionPercent}%`;
   $('compact-volume-note').textContent=`${Math.round(compactVolume)} vs ${Math.round(originalVolume)} cm³ modeled solid plastic. This compares scene geometry, not sliced filament or strength.`;
+  const wiringModels={original:{root:parts.assembly,yaw:yawGroup,pitch:pitchGroup,gun:parts.gun},plywood:parts.plywood,compact:parts.compact,recommended:parts.recommended};
+  parts.wiring=Object.fromEntries(mountBuilds.map(kind=>[kind,createBuildWiring(scene,wiringModels[kind],{kind})]));
   buildRange();
   projectile=new THREE.Group();cylinder(projectile,.055,.055,.35,0,0,0,mat.teal,'x');cylinder(projectile,.06,.06,.08,.2,0,0,mat.orange,'x');scene.add(projectile);projectile.visible=false;
   const ro=new ResizeObserver(resize);ro.observe(viewport);setView();
@@ -467,7 +470,7 @@ function fire(source='button'){
 function switchMode(mount,variant=state.mountVariant||'recommended'){
   history.replaceState(null,'',mount?'#'+variant:location.pathname+location.search);
   state.mount=mount;state.mountVariant=variant;state.paused=false;state.actualExplode=0;state.actualYaw=0;state.actualPitch=0;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
-  $('demo-controls').hidden=mount;$('mount-controls').hidden=!mount;$('mount-labels').hidden=!mount;$('target-labels').hidden=mount;$('walkthrough').hidden=mount;$('mount-footer').hidden=!mount;
+  $('demo-controls').hidden=mount;$('mount-controls').hidden=!mount;$('mount-labels').hidden=!mount||state.wiring;$('target-labels').hidden=mount;$('walkthrough').hidden=mount;$('mount-footer').hidden=!mount;
   document.querySelector('.world-pane').classList.toggle('mount-mode',mount);
   const alternative=mount&&variant==='plywood',compact=mount&&variant==='compact',recommended=mount&&variant==='recommended';
   for(const [id,active]of [['demo-tab',!mount],['mounts-tab',mount]]){$(id).classList.toggle('active',active);$(id).setAttribute('aria-selected',String(active));}
@@ -557,6 +560,7 @@ for(const build of ['compact','recommended'])$(build+'-removed').addEventListene
 $('iso-view').addEventListener('click',()=>setView());$('side-view').addEventListener('click',()=>setView(true));
 $('home').addEventListener('click',()=>{state.yaw=0;state.pitch=0;state.selected=null;state.sweep=false;state.explode=0;state.trimApplied=0;state.command=null;state.selectionPose={yaw:0,pitch:0};$('explode').value=0;$('explode-value').textContent='0%';$('mount-sweep').textContent='↔ Move both axes';showPhase(0);setView();});
 $('explode').addEventListener('input',e=>{state.explode=Number(e.target.value)/100;$('explode-value').textContent=`${e.target.value}%`;});
+$('show-wiring').addEventListener('change',e=>{state.wiring=e.target.checked;$('wiring-key').hidden=!state.wiring;$('mount-labels').hidden=!state.mount||state.wiring;});
 $('mount-sweep').addEventListener('click',()=>{state.sweep=!state.sweep;$('mount-sweep').textContent=state.sweep?'Ⅱ Pause motion':'↔ Move both axes';});
 // Keyboard access keeps the whole presentation usable without a mouse.
 feed.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pickTarget(1);}});
@@ -648,6 +652,12 @@ function animate(now){
       if(elapsed>.8)projectile.visible=false;
     }
     if(firing)parts.gun.position.x=-.035*Math.exp(-(now-state.shotTime)/90);else parts.gun.position.x=0;
+    if(parts.wiring){
+      const pose=[state.actualYaw,state.actualPitch,state.actualExplode].map(value=>value.toFixed(3)).join('/');
+      for(const [kind,wiring]of Object.entries(parts.wiring))wiring.update({visible:state.mount&&state.wiring&&state.mountVariant===kind,pose,time:now});
+      parts.legacyCable.visible=!state.mount||!state.wiring;
+      $('wiring-motion-note').textContent=state.actualExplode>.025?'Exploded view: routes stretch to keep connections visible.':'Service loops leave slack at yaw and pitch.';
+    }
     controls.update();renderer.render(scene,camera);
   }
 }
