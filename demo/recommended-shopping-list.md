@@ -1,20 +1,20 @@
 # Recommended hybrid — full retail reference
 
-For the class-resource plan toward $120, see [the budget plan](recommended-budget-plan.md). This file preserves the prior retail reference; it is not the recommended amount to order.
+For the class-resource plan toward $120, see [the budget plan](recommended-budget-plan.md). This retail fallback now counts the two owned aiming servos at $0 new spend; the original budget reference included $39.90 for them. It is not the recommended amount to order.
 
 Prices checked October 27, 2026. USD; before tax, shipping and tariffs. Candidate BOM for the trimmed, inverted Rapidstrike on the plywood hybrid mount. Choose this list instead of adding together the earlier mount lists.
 
-- **Remaining purchases: $272.24 estimated.**
-- **If Ford supplies all tagged items at no charge: $221.57 estimated** (saves $50.67).
-- Listed-price subtotal: $163.24. Planning allowances marked EST.: $109.00.
-- These totals assume an existing donor blaster, magazine, stock battery tray and webcam, as stated in the project notes. Class micro:bit, cables, resistors, printer access and filament are already covered.
+- **Remaining purchases: $232.34 estimated.**
+- **If Ford supplies all tagged items at no charge: $181.67 estimated** (saves $50.67).
+- Listed-price subtotal: $123.34. Planning allowances marked EST.: $109.00.
+- These totals assume an existing donor blaster, magazine, stock battery tray and webcam, as stated in the project notes. Both aiming servos, class micro:bit, cables, resistors, printer access and filament are already covered.
 - The full estimate exceeds the original $120 project allowance. Check available lab supplies before ordering; prices do not guarantee stock or fit.
 
-## 01 / Mount + movement — $136.09
+## 01 / Mount + movement — $96.19
 
 | Qty | Part / supplier | Unit or pack | Line total | Selection notes |
 |---:|---|---:|---:|---|
-| 2 | [Positional metal-gear servos](https://www.adafruit.com/product/1142) | $19.95 / each | $39.90 | Adafruit 1142. One yaw, one pitch; horns included. Candidate only: weigh and balance the stripped, loaded assembly before checking torque and travel. |
+| 2 | [Positional metal-gear servos](https://www.adafruit.com/product/1142) | Owned / $0 new spend | $0.00 | Two aiming servos already owned, confirmed by the user. Adafruit 1142 is only the earlier budget reference; the actual model is unspecified. Verify voltage/current, torque, horn spline and mounting dimensions for the owned servos. |
 | 1 | [4-inch lazy-Susan bearing](https://www.rockler.com/low-profile-lazy-susans) | $5.99 / each | $5.99 | Select Rockler #28969, 4-inch square. Supports yaw above four risers; transfer-drill its actual mounting pattern. |
 | 2 | [608ZZ pitch bearings](https://vxb.com/products/mr608-zz-ball-bearing-double-shielded-bore-di) | $7.77 / each | $15.54 | VXB MR608-ZZ, 8 × 22 × 7 mm. One per side, retained in small printed housings. |
 | 1 | [8 mm ID steel spacers, pack of 4](https://www.servocity.com/8mm-id-steel-spacer-12mm-od-10mm-length-4-pack/) | $1.99 / pack | $1.99 | 12 mm OD × 10 mm long. Adapt the pivot stack so spacers contact inner races without rubbing shields. |
@@ -63,7 +63,7 @@ Prices checked October 27, 2026. USD; before tax, shipping and tariffs. Candidat
 
 ## Already covered / borrow
 
-- Class-provided micro:bit, USB/signal cables and resistors.
+- Two aiming servos already owned, plus class-provided micro:bit, USB/signal cables and resistors.
 - Existing laptop, 3D-printer access and filament: $0 new spend for saddles, rails, bearing holders, servo adapters, pot couplers and covers.
 - Reuse the donor Rapidstrike, magazine, stock motors/pusher, battery tray and webcam from the project notes. This assumes the webcam can be attached to the moving cradle.
 - Borrow workshop tools, soldering equipment, multimeter and a current-limited test supply for measurements. These tools are not in the purchase total.
@@ -81,7 +81,7 @@ Both replacements add $60.00 in allowances; neither is a verified fitted-product
 
 - This is one complete candidate BOM for the Recommended hybrid, not an addition to either earlier mount list. Prices checked October 27, 2026, in USD; exclude tax, shipping, tariffs and repeat battery/dart purchases. EST. means a planning allowance, not a quoted fitted product. Catalog links show where to select unresolved parts.
 
-- The Ford case removes only the tagged wood, braces, pivot/general fasteners and two clamps, if staff can supply suitable equivalents at no project charge. Stock and borrowing availability are unconfirmed. It keeps servos, bearings, spacers, linkage, straps, padding and all electrical purchases.
+- The Ford case removes only the tagged wood, braces, pivot/general fasteners and two clamps, if staff can supply suitable equivalents at no project charge. Stock and borrowing availability are unconfirmed. The two owned aiming servos cost $0 new spend in both cases. It keeps purchased bearings, spacers, linkage, straps, padding and the remaining electrical items.
 
 - Before ordering fit-dependent parts, measure the trimmed receiver with magazine, camera and wiring installed; confirm inverted feeding and access. Set the loaded balance point, then finalize servo torque, pivot stacks, linkage length and fastener lengths. The recommended mock has no released fabrication CAD; the older CAD pack is a different mount.
 

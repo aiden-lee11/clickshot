@@ -5,7 +5,7 @@ export const priceDate = 'October 27, 2026';
 const item = (qty, name, url, unitCents, unit, note, extra = {}) => ({ qty, name, url, unitCents, unit, note, ...extra });
 export const shoppingGroups = [
   { id:'mount', name:'01 / Mount + movement', items:[
-    item(2,'Positional metal-gear servos','https://www.adafruit.com/product/1142',1995,'each','Adafruit 1142. One yaw, one pitch; horns included. Candidate only: weigh and balance the stripped, loaded assembly before checking torque and travel.'),
+    item(2,'Positional metal-gear servos','https://www.adafruit.com/product/1142',1995,'each','Two aiming servos already owned, confirmed by the user. Adafruit 1142 is only the earlier budget reference; the actual model is unspecified. Verify voltage/current, torque, horn spline and mounting dimensions for the owned servos.',{owned:true}),
     item(1,'4-inch lazy-Susan bearing','https://www.rockler.com/low-profile-lazy-susans',599,'each','Select Rockler #28969, 4-inch square. Supports yaw above four risers; transfer-drill its actual mounting pattern.'),
     item(2,'608ZZ pitch bearings','https://vxb.com/products/mr608-zz-ball-bearing-double-shielded-bore-di',777,'each','VXB MR608-ZZ, 8 × 22 × 7 mm. One per side, retained in small printed housings.'),
     item(1,'8 mm ID steel spacers, pack of 4','https://www.servocity.com/8mm-id-steel-spacer-12mm-od-10mm-length-4-pack/',199,'pack','12 mm OD × 10 mm long. Adapt the pivot stack so spacers contact inner races without rubbing shields.'),
@@ -46,7 +46,7 @@ export const shoppingGroups = [
 ];
 
 export const ownedItems = [
-  'Class-provided micro:bit, USB/signal cables and resistors.',
+  'Two aiming servos already owned, plus class-provided micro:bit, USB/signal cables and resistors.',
   'Existing laptop, 3D-printer access and filament: $0 new spend for saddles, rails, bearing holders, servo adapters, pot couplers and covers.',
   'Reuse the donor Rapidstrike, magazine, stock motors/pusher, battery tray and webcam from the project notes. This assumes the webcam can be attached to the moving cradle.',
   'Borrow workshop tools, soldering equipment, multimeter and a current-limited test supply for measurements. These tools are not in the purchase total.'
@@ -59,7 +59,7 @@ export const replacementItems = [
 
 export const purchaseNotes = [
   'This is one complete candidate BOM for the Recommended hybrid, not an addition to either earlier mount list. Prices checked October 27, 2026, in USD; exclude tax, shipping, tariffs and repeat battery/dart purchases. EST. means a planning allowance, not a quoted fitted product. Catalog links show where to select unresolved parts.',
-  'The Ford case removes only the tagged wood, braces, pivot/general fasteners and two clamps, if staff can supply suitable equivalents at no project charge. Stock and borrowing availability are unconfirmed. It keeps servos, bearings, spacers, linkage, straps, padding and all electrical purchases.',
+  'The Ford case removes only the tagged wood, braces, pivot/general fasteners and two clamps, if staff can supply suitable equivalents at no project charge. Stock and borrowing availability are unconfirmed. The two owned aiming servos cost $0 new spend in both cases. It keeps purchased bearings, spacers, linkage, straps, padding and the remaining electrical items.',
   'Before ordering fit-dependent parts, measure the trimmed receiver with magazine, camera and wiring installed; confirm inverted feeding and access. Set the loaded balance point, then finalize servo torque, pivot stacks, linkage length and fastener lengths. The recommended mock has no released fabrication CAD; the older CAD pack is a different mount.',
   'The proposed motor circuit is a budgeted custom two-channel circuit, not a plug-in wiring kit. Measure startup/stall demands using appropriate lab equipment before selecting final switches, suppression, wire, fuses and thermal parts. A jam or loss of power can leave the pusher between positions; retain or implement a return-to-home strategy before treating one command as one dart.',
   'Power plan: micro:bit from laptop USB; aiming servos/interfaces from regulated 5 V; stock blaster motors from the retained nominal 6 V cell tray. Use a common logic reference with deliberate high-current return routing. Do not feed either motor rail into the micro:bit 3 V pin. A schematic and physical validation are still required.',
@@ -69,24 +69,25 @@ export const purchaseNotes = [
 
 const rows = shoppingGroups.flatMap(group => group.items);
 export const shoppingTotals = {
-  total: rows.reduce((sum,row)=>sum+row.qty*row.unitCents,0),
+  total: rows.reduce((sum,row)=>sum+(row.owned?0:row.qty*row.unitCents),0),
+  ownedValue: rows.filter(row=>row.owned).reduce((sum,row)=>sum+row.qty*row.unitCents,0),
   allowances: rows.filter(row=>row.estimate).reduce((sum,row)=>sum+row.qty*row.unitCents,0),
   fordSaving: rows.filter(row=>row.ford).reduce((sum,row)=>sum+row.qty*row.unitCents,0),
-  groups: Object.fromEntries(shoppingGroups.map(group=>[group.id,group.items.reduce((sum,row)=>sum+row.qty*row.unitCents,0)]))
+  groups: Object.fromEntries(shoppingGroups.map(group=>[group.id,group.items.reduce((sum,row)=>sum+(row.owned?0:row.qty*row.unitCents),0)]))
 };
 export const money = cents => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
 export const budgetPlan = createBudgetPlan(shoppingGroups, shoppingTotals);
 const escapeHTML = text => String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const table = items => `<div class="parts-table-wrap"><table><thead><tr><th scope="col">Qty</th><th scope="col">Part / selection notes</th><th scope="col" class="price-cell">Unit / pack</th><th scope="col" class="price-cell">Line total</th></tr></thead><tbody>${items.map(row=>`<tr><td>${row.qty}</td><td><a href="${escapeHTML(row.url)}" target="_blank" rel="noreferrer">${escapeHTML(row.name)} ↗</a><p>${escapeHTML(row.note)}</p>${row.ford?'<small class="ford-tag">CHECK FORD FIRST</small>':''}</td><td class="price-cell">${money(row.unitCents)}<small>/ ${escapeHTML(row.unit)}</small></td><td class="price-cell line-total">${money(row.qty*row.unitCents)}${row.estimate?'<small class="estimate-tag">EST.</small>':''}</td></tr>`).join('')}</tbody></table></div>`;
+const table = items => `<div class="parts-table-wrap"><table><thead><tr><th scope="col">Qty</th><th scope="col">Part / selection notes</th><th scope="col" class="price-cell">Unit / pack</th><th scope="col" class="price-cell">Line total</th></tr></thead><tbody>${items.map(row=>`<tr><td>${row.qty}</td><td><a href="${escapeHTML(row.url)}" target="_blank" rel="noreferrer">${escapeHTML(row.name)} ↗</a><p>${escapeHTML(row.note)}</p>${row.ford?'<small class="ford-tag">CHECK FORD FIRST</small>':''}</td><td class="price-cell">${row.owned?'$0 new spend':money(row.unitCents)}<small>${row.owned?'OWNED':'/ '+escapeHTML(row.unit)}</small></td><td class="price-cell line-total">${money(row.owned?0:row.qty*row.unitCents)}${row.estimate?'<small class="estimate-tag">EST.</small>':''}</td></tr>`).join('')}</tbody></table></div>`;
 
 export function initRecommendedShopping() {
   const dialog=document.getElementById('recommended-parts-dialog');
   const totals=shoppingTotals;
   dialog.innerHTML=`<div class="dialog-top"><div><span class="section-label">RECOMMENDED HYBRID / COMPLETE PROJECT BOM</span><h2 id="recommended-parts-title">What we need to buy</h2></div><button class="dialog-close" id="close-recommended-parts" aria-label="Close recommended shopping list">×</button></div>
-    ${budgetHTML(budgetPlan)}<details class="budget-retail"><summary>Retail reference — $272.24 if buying everything separately</summary><div class="budget-retail-body"><p class="dialog-intro">The trimmed, inverted Rapidstrike on a plywood frame. Mount, sensing, power and demo supplies in one list.</p>
+    ${budgetHTML(budgetPlan)}<details class="budget-retail"><summary>Retail fallback — ${money(totals.total)} with both servos owned</summary><div class="budget-retail-body"><p class="dialog-intro">The trimmed, inverted Rapidstrike on a plywood frame. Mount, sensing, power and demo supplies in one list.</p>
     <div class="cost-summary"><div><span>RETAIL REFERENCE</span><strong>${money(totals.total)} <small>est.</small></strong></div><div><span>IF FORD SUPPLIES TAGGED ITEMS</span><strong>${money(totals.total-totals.fordSaving)} <small>est.</small></strong></div></div>
     <p class="cost-note">USD · Checked ${priceDate} · Before tax, shipping &amp; tariffs.<br>${money(totals.total-totals.allowances)} in listed prices + ${money(totals.allowances)} in <span class="estimate-tag">EST.</span> allowances. Ford savings: ${money(totals.fordSaving)}, conditional.</p>
-    <div class="shopping-owned"><b>Already covered / assumed reuse · $0</b><p>micro:bit · class cables + resistors · laptop · printer + filament</p><p>Donor blaster + magazine + stock tray and webcam assumed available from your project notes. Replacement budgets are separate below.</p></div>
+    <div class="shopping-owned"><b>Already covered / assumed reuse · $0</b><p>2 owned aiming servos · micro:bit · class cables + resistors · laptop · printer + filament</p><p>Donor blaster + magazine + stock tray and webcam assumed available from your project notes. Replacement budgets are separate below.</p></div>
     <a class="shopping-download" href="recommended-shopping-list.md" download>Download the complete list + notes ↓</a>
     <div class="shopping-sections">${shoppingGroups.map(group=>`<details open id="shopping-${group.id}"><summary><span>${escapeHTML(group.name)}</span><b>${money(totals.groups[group.id])}</b></summary>${table(group.items)}</details>`).join('')}</div>
     <div class="shopping-total"><span>Full purchase estimate</span><b>${money(totals.total)}</b></div>

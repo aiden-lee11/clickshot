@@ -1,16 +1,15 @@
 # Recommended build — path toward $120
 
-The previous $272.24 list was a retail reference for the whole project; earlier ~$100 lists covered the mount and aiming servos. This plan preserves two-axis movement, ranging, external position feedback and blaster switching.
+The previous $272.24 list was a retail reference for the whole project; earlier ~$100 lists covered the mount and aiming servos. Both aiming servos are now confirmed owned, removing $39.90 from new purchases. This plan preserves two-axis movement, ranging, external position feedback and blaster switching.
 
-**Parts if all resources below are confirmed: $102.65.** This leaves $17.35 within $120 for tax, shipping and missing supplies. It is a target, not a guaranteed checkout total. Consolidate class orders or use local pickup; multi-vendor shipping may exceed the reserve.
+**Parts if all resources below are confirmed: $62.75.** This leaves $57.25 within $120 for tax, shipping and missing supplies. It is a target, not a guaranteed checkout total. Consolidate class orders or use local pickup; multi-vendor shipping may exceed the reserve.
 
-**Without the extra class breakout/pots and existing C cells: $120.07 in parts before tax/shipping.**
+**Without the extra class breakout/pots and existing C cells: $80.17 in parts before tax/shipping.**
 
 ## Plan to buy
 
 | Qty | Purchase | Unit / pack | Line total |
 |---:|---|---:|---:|
-| 2 | [Positional metal-gear servos](https://www.adafruit.com/product/1142) | $19.95 / each | $39.90 |
 | 1 | [4-inch lazy-Susan bearing](https://www.rockler.com/low-profile-lazy-susans) | $5.99 / each | $5.99 |
 | 1 | [Two 8 × 22 × 7 mm pitch bearings](https://www.servocity.com/8mm-id-x-22mm-od-non-flanged-ball-bearing-2-pack/) | $3.99 / 2-pack | $3.99 |
 | 1 | [8 mm ID steel spacers, pack of 4](https://www.servocity.com/8mm-id-steel-spacer-12mm-od-10mm-length-4-pack/) | $1.99 / pack | $1.99 |
@@ -23,13 +22,13 @@ The previous $272.24 list was a retail reference for the whole project; earlier 
 | 1 | [Flyback rectifier set](https://www.st.com/resource/en/datasheet/stps20l40c.pdf) | $6.00 / set | $6.00 EST. |
 | 1 | [Two fuse holders + fuse assortment](https://www.digikey.com/en/products/category/circuit-protection/9) | $7.00 / set | $7.00 EST. |
 | 1 | [DC-rated power cutoff switch](https://www.digikey.com/en/products/category/switches/15) | $5.00 / each | $5.00 EST. |
-| | **Parts subtotal** | | **$102.65** |
+| | **Parts subtotal** | | **$62.75** |
 
 EST. denotes a planning allowance, not a fitted kit. Prices checked October 27, 2026. For current/fit selection notes see [the retail reference](recommended-shopping-list.md).
 
 ## Already covered
 
-- Confirmed by the user: micro:bit, class cables/resistors, 3D printer access and filament.
+- Confirmed by the user: both aiming servos, micro:bit, class cables/resistors, 3D printer access and filament. The owned servo models are unspecified: verify their voltage/current, torque, horn spline and mounting dimensions; the prior Adafruit servo is a budget reference, not an identification of these servos.
 - Reuse assumed from project notes: laptop, webcam, donor Rapidstrike, magazine, stock motors/pusher and battery tray. Fresh batteries are a separate check.
 
 ## Resource checks — not confirmed free stock
@@ -46,9 +45,9 @@ Borrow a regulated 5 V supply with enough current for both servos, with suitable
 
 Use existing straps, padding and straight foam darts; make the orange target and a suitable dart-catching backstop from available card/fabric. If straps are unavailable, print fitted retaining caps using existing filament and class bolts, then verify retention and mechanism clearance. [Source](https://design.northwestern.edu/about/design-facilities/corner-makery.html).
 
-### Extra checks to reach ~$103 — avoids $17.42
+### Extra checks to reach ~$62.75 — avoids $17.42
 
-Class micro:bit edge breakout ($6.25) + two 10 kΩ pots ($1.90), and usable existing C cells ($9.27). These have NOT been confirmed. If missing, buy them: the parts subtotal becomes $120.07. Keep the pots for the proposed external-sensor requirement.
+Class micro:bit edge breakout ($6.25) + two 10 kΩ pots ($1.90), and usable existing C cells ($9.27). These have NOT been confirmed. If missing, buy them: the parts subtotal becomes $80.17. Keep the pots for the proposed external-sensor requirement.
 
 Northwestern's [Corner Makery page](https://design.northwestern.edu/about/design-facilities/corner-makery.html) explicitly allows use of the scrap bin under the mill. It does not guarantee suitable plywood dimensions or stock. [MAKE Northwestern](https://make.northwestern.edu/facilties/equipment-categories.html) lists fastener stock in the Shop and electronics resources in separate labs. The [mechatronics lab guide](https://ndm736.github.io/mechatronics/) documents power supplies, wire, capacitors and common ICs; exact part availability, charges and access/loan permission must be confirmed.
 
@@ -56,16 +55,17 @@ Northwestern's [Corner Makery page](https://design.northwestern.edu/about/design
 
 | Change | Saving |
 |---|---:|
+| Both aiming servos already owned | $39.90 |
 | ServoCity bearing 2-pack instead of two VXB singles | $11.55 |
 | Ford wood, fixings/braces and borrowed clamps | $50.67 |
 | Borrow lab servo power; use lab wiring, capacitors and prototype board | $62.95 |
 | Reuse straps, padding, darts and scrap target material | $27.00 |
 | Class breakout + two pots; usable existing C cells | $17.42 |
-| **Total reduction** | **$169.59** |
+| **Total reduction** | **$209.49** |
 
 ## If resources are missing
 
-- Missing class breakout: add $6.25. Missing two pots: add $1.90. Missing usable C cells: add $9.27. All three add $17.42, giving $120.07 in parts.
+- Missing class breakout: add $6.25. Missing two pots: add $1.90. Missing usable C cells: add $9.27. All three add $17.42, giving $80.17 in parts.
 - Missing suitable regulated 5 V servo supply AND rated lab leads/distribution: add $29.95 + $8.00. Verify combined servo peak load; an arbitrary lab output is not automatically adequate.
 - Missing the tagged Ford wood/hardware/clamps: add $50.67 at the reference allowances. Missing lab capacitors/wire/board: add $25. Missing reusable straps/padding/darts/target materials: add up to $27.
 - Existing class cables cover USB and signals, not automatically the gauge/current rating needed for motors. Confirm suitable power wiring and terminations separately.
