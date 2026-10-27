@@ -1,3 +1,5 @@
+import { createBudgetPlan, budgetHTML } from './recommended-budget.js';
+
 // Prices are integer USD cents. Both the dialog and Markdown export use this data.
 export const priceDate = 'October 27, 2026';
 const item = (qty, name, url, unitCents, unit, note, extra = {}) => ({ qty, name, url, unitCents, unit, note, ...extra });
@@ -62,7 +64,7 @@ export const purchaseNotes = [
   'The proposed motor circuit is a budgeted custom two-channel circuit, not a plug-in wiring kit. Measure startup/stall demands using appropriate lab equipment before selecting final switches, suppression, wire, fuses and thermal parts. A jam or loss of power can leave the pusher between positions; retain or implement a return-to-home strategy before treating one command as one dart.',
   'Power plan: micro:bit from laptop USB; aiming servos/interfaces from regulated 5 V; stock blaster motors from the retained nominal 6 V cell tray. Use a common logic reference with deliberate high-current return routing. Do not feed either motor rail into the micro:bit 3 V pin. A schematic and physical validation are still required.',
   'The linked VL53L4CX and proposed VL53L0X need different drivers. Choose one before purchase; no second distance sensor is included. The two external pots preserve the proposed axis-feedback sensors; confirm the class rubric and implement their couplings. The on-board A/B button can confirm firing at $0; clap input can use the built-in microphone only on micro:bit V2.',
-  'Buy in stages: first test the donor and borrowed power supplies, then assemble and balance the mount, then integrate sensing and motor switching. If class supplies the listed 5 V supply or breakout, subtract their line totals once. The original $120 allowance is below the full purchase estimate even in the conditional Ford case.'
+  'Buy in stages: first test the donor and borrowed power supplies, then assemble and balance the mount, then integrate sensing and motor switching. If class supplies the listed 5 V supply or breakout, subtract their line totals once. This retail reference exceeds $120; the separate class-project plan identifies additional lab/reuse savings and unconfirmed resource checks.'
 ];
 
 const rows = shoppingGroups.flatMap(group => group.items);
@@ -73,6 +75,7 @@ export const shoppingTotals = {
   groups: Object.fromEntries(shoppingGroups.map(group=>[group.id,group.items.reduce((sum,row)=>sum+row.qty*row.unitCents,0)]))
 };
 export const money = cents => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
+export const budgetPlan = createBudgetPlan(shoppingGroups, shoppingTotals);
 const escapeHTML = text => String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const table = items => `<div class="parts-table-wrap"><table><thead><tr><th scope="col">Qty</th><th scope="col">Part / selection notes</th><th scope="col" class="price-cell">Unit / pack</th><th scope="col" class="price-cell">Line total</th></tr></thead><tbody>${items.map(row=>`<tr><td>${row.qty}</td><td><a href="${escapeHTML(row.url)}" target="_blank" rel="noreferrer">${escapeHTML(row.name)} ↗</a><p>${escapeHTML(row.note)}</p>${row.ford?'<small class="ford-tag">CHECK FORD FIRST</small>':''}</td><td class="price-cell">${money(row.unitCents)}<small>/ ${escapeHTML(row.unit)}</small></td><td class="price-cell line-total">${money(row.qty*row.unitCents)}${row.estimate?'<small class="estimate-tag">EST.</small>':''}</td></tr>`).join('')}</tbody></table></div>`;
 
@@ -80,8 +83,8 @@ export function initRecommendedShopping() {
   const dialog=document.getElementById('recommended-parts-dialog');
   const totals=shoppingTotals;
   dialog.innerHTML=`<div class="dialog-top"><div><span class="section-label">RECOMMENDED HYBRID / COMPLETE PROJECT BOM</span><h2 id="recommended-parts-title">What we need to buy</h2></div><button class="dialog-close" id="close-recommended-parts" aria-label="Close recommended shopping list">×</button></div>
-    <p class="dialog-intro">The trimmed, inverted Rapidstrike on a plywood frame. Mount, sensing, power and demo supplies in one list.</p>
-    <div class="cost-summary"><div><span>REMAINING PURCHASES</span><strong>${money(totals.total)} <small>est.</small></strong></div><div><span>IF FORD SUPPLIES TAGGED ITEMS</span><strong>${money(totals.total-totals.fordSaving)} <small>est.</small></strong></div></div>
+    ${budgetHTML(budgetPlan)}<details class="budget-retail"><summary>Retail reference — $272.24 if buying everything separately</summary><div class="budget-retail-body"><p class="dialog-intro">The trimmed, inverted Rapidstrike on a plywood frame. Mount, sensing, power and demo supplies in one list.</p>
+    <div class="cost-summary"><div><span>RETAIL REFERENCE</span><strong>${money(totals.total)} <small>est.</small></strong></div><div><span>IF FORD SUPPLIES TAGGED ITEMS</span><strong>${money(totals.total-totals.fordSaving)} <small>est.</small></strong></div></div>
     <p class="cost-note">USD · Checked ${priceDate} · Before tax, shipping &amp; tariffs.<br>${money(totals.total-totals.allowances)} in listed prices + ${money(totals.allowances)} in <span class="estimate-tag">EST.</span> allowances. Ford savings: ${money(totals.fordSaving)}, conditional.</p>
     <div class="shopping-owned"><b>Already covered / assumed reuse · $0</b><p>micro:bit · class cables + resistors · laptop · printer + filament</p><p>Donor blaster + magazine + stock tray and webcam assumed available from your project notes. Replacement budgets are separate below.</p></div>
     <a class="shopping-download" href="recommended-shopping-list.md" download>Download the complete list + notes ↓</a>
@@ -89,7 +92,7 @@ export function initRecommendedShopping() {
     <div class="shopping-total"><span>Full purchase estimate</span><b>${money(totals.total)}</b></div>
     <details class="shopping-notes"><summary>Assumptions, selection checks + ways to save</summary><ul>${purchaseNotes.map(note=>`<li>${escapeHTML(note)}</li>`).join('')}</ul><h3>Covered resources</h3><ul>${ownedItems.map(note=>`<li>${escapeHTML(note)}</li>`).join('')}</ul><p><a href="https://www.hasbro.com/common/documents/dad2af6f1c4311ddbd0b0800200c9a66/2B48833750569047F598BEBD4AA242BA.pdf" target="_blank" rel="noreferrer">Hasbro Rapidstrike manual ↗</a> · <a href="https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/20001423J.pdf" target="_blank" rel="noreferrer">Gate-driver datasheet ↗</a> · <a href="recommended-mount-plan.md" download>Hybrid build notes ↓</a></p></details>
     <details class="shopping-notes"><summary>Only if missing: donor blaster / webcam · excluded from total</summary>${table(replacementItems)}<p>Add up to ${money(replacementItems.reduce((sum,row)=>sum+row.qty*row.unitCents,0))} in replacement allowances if both are needed.</p></details>
-    <p class="cost-scope">Candidate BOM, not a fitted kit or validated electrical design. The full purchase estimate exceeds the original $120 allowance; confirm class/Ford resources before ordering. None of the linked parts has been purchased.</p>`;
+    <p class="cost-scope">Candidate BOM, not a fitted kit or validated electrical design. The full purchase estimate exceeds the original $120 allowance; confirm class/Ford resources before ordering. None of the linked parts has been purchased.</p></div></details>`;
   document.getElementById('open-recommended-parts').addEventListener('click',()=>dialog.showModal());
   document.getElementById('close-recommended-parts').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});

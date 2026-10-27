@@ -1,4 +1,6 @@
-# Recommended hybrid — complete shopping list
+# Recommended hybrid — full retail reference
+
+For the class-resource plan toward $120, see [the budget plan](recommended-budget-plan.md). This file preserves the prior retail reference; it is not the recommended amount to order.
 
 Prices checked October 27, 2026. USD; before tax, shipping and tariffs. Candidate BOM for the trimmed, inverted Rapidstrike on the plywood hybrid mount. Choose this list instead of adding together the earlier mount lists.
 
@@ -89,7 +91,7 @@ Both replacements add $60.00 in allowances; neither is a verified fitted-product
 
 - The linked VL53L4CX and proposed VL53L0X need different drivers. Choose one before purchase; no second distance sensor is included. The two external pots preserve the proposed axis-feedback sensors; confirm the class rubric and implement their couplings. The on-board A/B button can confirm firing at $0; clap input can use the built-in microphone only on micro:bit V2.
 
-- Buy in stages: first test the donor and borrowed power supplies, then assemble and balance the mount, then integrate sensing and motor switching. If class supplies the listed 5 V supply or breakout, subtract their line totals once. The original $120 allowance is below the full purchase estimate even in the conditional Ford case.
+- Buy in stages: first test the donor and borrowed power supplies, then assemble and balance the mount, then integrate sensing and motor switching. If class supplies the listed 5 V supply or breakout, subtract their line totals once. This retail reference exceeds $120; the separate class-project plan identifies additional lab/reuse savings and unconfirmed resource checks.
 
 ## Technical references
 

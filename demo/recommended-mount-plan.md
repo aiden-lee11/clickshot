@@ -42,4 +42,4 @@ Component references already used in the project: [Rockler turntable](https://ww
 
 ## Complete shopping list
 
-See [the recommended-build shopping list](recommended-shopping-list.md) for mount, sensing, power, switching and demo purchases, with current supplier links, conditional Ford savings and separately identified allowances. It assumes the donor blaster/webcam mentioned in the project notes are reused; replacement budgets are separate. The earlier mount totals remain separate. Final torque, fit and motor-current checks can change this candidate BOM.
+Start with [the class-resource budget plan toward $120](recommended-budget-plan.md), which separates purchases from confirmed resources and unconfirmed class/Ford checks. The [full retail reference](recommended-shopping-list.md) preserves the prior mount, sensing, power, switching and demo list with supplier links and marked allowances. It assumes the donor blaster/webcam mentioned in the project notes are reused; replacement budgets are separate. The earlier mount totals remain separate. Final torque, fit and motor-current checks can change this candidate BOM.

@@ -1,9 +1,12 @@
+import { budgetMarkdown } from '../recommended-budget.js';
 import { writeFile } from 'node:fs/promises';
-import { shoppingGroups, shoppingTotals, ownedItems, replacementItems, purchaseNotes, money, priceDate } from '../recommended-shopping.js';
+import { shoppingGroups, shoppingTotals, ownedItems, replacementItems, purchaseNotes, money, priceDate, budgetPlan } from '../recommended-shopping.js';
 
 const table = items => ['| Qty | Part / supplier | Unit or pack | Line total | Selection notes |','|---:|---|---:|---:|---|',...items.map(row=>`| ${row.qty} | [${row.name}](${row.url})${row.ford?' · CHECK FORD FIRST':''} | ${money(row.unitCents)} / ${row.unit} | ${money(row.qty*row.unitCents)}${row.estimate?' EST.':''} | ${row.note} |`)].join('\n');
 const t=shoppingTotals;
-const output=`# Recommended hybrid — complete shopping list
+const output=`# Recommended hybrid — full retail reference
+
+For the class-resource plan toward $120, see [the budget plan](recommended-budget-plan.md). This file preserves the prior retail reference; it is not the recommended amount to order.
 
 Prices checked ${priceDate}. USD; before tax, shipping and tariffs. Candidate BOM for the trimmed, inverted Rapidstrike on the plywood hybrid mount. Choose this list instead of adding together the earlier mount lists.
 
@@ -40,4 +43,5 @@ ${purchaseNotes.map(note=>'- '+note).join('\n\n')}
 This list does not modify the earlier mount scenes or CAD. No purchases are made by viewing the list.
 `;
 await writeFile(new URL('../recommended-shopping-list.md',import.meta.url),output);
-console.log(JSON.stringify(t,null,2));
+await writeFile(new URL('../recommended-budget-plan.md',import.meta.url),budgetMarkdown(budgetPlan));
+console.log(JSON.stringify({retail:t.total,coreParts:budgetPlan.coreTotal,resourcePlanParts:budgetPlan.total,roomWithin120:budgetPlan.reserve},null,2));
