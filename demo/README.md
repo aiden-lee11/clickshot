@@ -75,3 +75,9 @@ Open `/cad/` for the CAD-mesh viewer, exported STEP assembly, print-oriented STL
 ## Compact inverted concept
 
 The **Compact inverted** tab adds a third material-first mount mock. The receiver is shortened and inverted, with the magazine above, two short cutout cheeks, light saddles/rails, a web deck and side-driven yaw. The existing printed/plywood scenes and earlier CAD pack are preserved. `compact-mount.js` owns the new procedural assembly and crank/rod closures; `compact.css` its presentation. See `compact-mount-plan.md` for the proposed 100 mm pitch height, 260 × 220 mm base, material-proxy methodology and unresolved balance/inverted-feeding checks. The on-screen plastic-volume reduction compares rendered print-material geometry against the original scene, not slicer filament or CAD strength. This concept has no new fabrication CAD.
+
+## Recommended hybrid and build navigation
+
+The top navigation now has **Walkthrough** and **Mount builds**. A selector and previous/next arrows switch among the four assemblies: Original printed, Plywood frame, Compact inverted and Recommended hybrid. Direct links use `#original`, `#plywood`, `#compact` and `#recommended`.
+
+The recommended mock shares the illustrative trimmed receiver with the compact model, but uses solid flat plywood uprights/deck, small printed bearing housings, bought pitch bearings, wood risers and coaxial yaw underneath. It has one pitch linkage. See `recommended-mount-plan.md`; this concept does not replace or update the earlier CAD pack or price lists.
