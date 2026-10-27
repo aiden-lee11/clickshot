@@ -10,9 +10,10 @@ initRecommendedShopping();
 
 const $ = id => document.getElementById(id);
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+const shotCooldownMS = 1200;
 const rad = THREE.MathUtils.degToRad;
 const degrees = value => (Math.abs(value)<.05 ? 0 : value).toFixed(1);
-const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, mount: false, mountVariant: 'recommended', compactRemoved: false, wiring: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
+const state = { yaw: 0, pitch: 0, actualYaw: 0, actualPitch: 0, range: 2.5, selected: null, compensation: true, trimApplied: 0, phase: 0, phaseElapsed: 0, paused: false, ready: false, manualAim: false, manualStatus: null, manualShotTaken: false, mount: false, mountVariant: 'recommended', compactRemoved: false, wiring: false, explode: 0, actualExplode: 0, sweep: false, shots: 0, shotTime: -10000, lastTime: -10000 };
 const targets = [{ name:'A', yaw:-22, pitch:6, range:2.2 }, { name:'B', yaw:12, pitch:18, range:3.6 }, { name:'C', yaw:26, pitch:-3, range:2.8 }];
 let renderer, scene, camera, controls, yawGroup, pitchGroup, cradle, bearingDeck, sightLine, com, yawArc, pitchArc, projectile, lastFrame = 0;
 // Mount units: one scene unit = 100 mm. Overall blaster length is source-based;
@@ -395,6 +396,9 @@ function setView(side=false){
 function offset(){return state.mount?0:state.trimApplied;}
 function finalPitch(){return clamp(state.pitch+offset(),-15,40);}
 function isAligned(){return Math.abs(state.actualYaw-state.yaw)<.22&&Math.abs(state.actualPitch-finalPitch())<.22&&!state.sweep;}
+function canFire(now=performance.now()){
+  return !state.mount&&(state.manualAim||state.selected!==null)&&state.ready&&isAligned()&&!state.paused&&now-state.shotTime>=shotCooldownMS;
+}
 function selectedPoint(){
   if(typeof state.selected==='number')return targetObjects[state.selected].root.position.clone();
   return pointFor(state.command?.yaw??state.yaw,state.command?.pitch??state.pitch,state.range);
@@ -420,7 +424,7 @@ function showPhase(phase){
   $('legend-before').textContent=phase===6?'Camera-centered pose':'Selected target';
   $('legend-before').previousElementSibling.className=phase===6?'blue':'green';
   $('legend-after').textContent=phase===6?'Range-adjusted aim':'Current aim';
-  if(phase<4){state.yaw=state.selectionPose?.yaw??0;state.pitch=state.selectionPose?.pitch??0;state.actualYaw=state.yaw;state.actualPitch=state.pitch;}
+  if(phase<4&&!state.manualAim){state.yaw=state.selectionPose?.yaw??0;state.pitch=state.selectionPose?.pitch??0;state.actualYaw=state.yaw;state.actualPitch=state.pitch;}
   if(phase===5&&state.command){state.actualYaw=state.command.yaw;state.actualPitch=state.command.pitch;}
   document.querySelectorAll('[data-step]').forEach(b=>{const n=Number(b.dataset.step);b.classList.toggle('current',n===(phase||1));b.classList.toggle('done',n<phase);b.disabled=state.selected===null&&n>1;});
   const [title,detail]=phaseCopy[phase];$('step-title').textContent=title;$('step-detail').textContent=detail;
@@ -436,6 +440,7 @@ function showPhase(phase){
 }
 function pickTarget(index){
   if(state.mount)return;const target=targets[index];
+  state.manualAim=false;state.manualStatus=null;
   state.selected=index;state.range=target.range;state.sweep=false;state.trimApplied=0;state.paused=false;
   state.selectionPose={yaw:state.actualYaw,pitch:state.actualPitch};
   state.command={yaw:target.yaw,pitch:target.pitch};
@@ -453,23 +458,37 @@ function updateInputs(){
   for(const t of targetObjects)t.label.classList.toggle('active',state.selected===t.plate.userData.target);
 }
 function manual(){
-  state.sweep=false;state.selected=null;state.trimApplied=0;state.command=null;state.selectionPose={yaw:state.yaw,pitch:state.pitch};showPhase(0);
-  $('laptop-message').textContent='Manual control. Click a target to return to the walkthrough.';
+  state.manualAim=true;state.manualStatus=null;state.manualShotTaken=false;
+  state.sweep=false;state.selected=null;state.pixelOffset=null;state.trimApplied=0;state.command=null;state.selectionPose={yaw:state.actualYaw,pitch:state.actualPitch};showPhase(0);
+  $('laptop-message').textContent='Manual aim. Let movement settle, then confirm a shot below. Click a target to return to the walkthrough.';
+  $('legend-before').textContent='Manual aim point';$('mcu').classList.add('active');
+}
+function updateManualStatus(aligned,firing,now){
+  if(!state.manualAim||state.mount)return;
+  state.ready=aligned&&!state.paused;
+  if(firing)return;
+  const status=!aligned?'moving':now-state.shotTime<shotCooldownMS?'cooldown':'ready';
+  if(state.manualStatus===status)return;state.manualStatus=status;
+  $('step-title').textContent=status==='moving'?'Manual aim · moving.':status==='cooldown'?'Manual shot · resetting.':state.manualShotTaken?'Manual shot complete.':'Manual aim ready.';
+  $('step-detail').textContent=status==='moving'?'The turret is moving to your yaw and pitch.':status==='cooldown'?'Wait for the next confirmation.':'Confirm foam shot or simulate a clap to fire along the current aim. Manual pitch is used directly.';
+  $('mcu-badge').textContent=status==='moving'?'MOVING':status==='cooldown'?'COOLDOWN':'READY';
+  $('mcu-message').textContent=status==='moving'?'Following manual yaw and pitch.':status==='cooldown'?'Simulated shot complete. Resetting for another confirmation.':'Manual aim settled. Waiting for your confirmation.';
 }
 function fire(source='button'){
-  if(state.mount||state.selected===null||!state.ready||performance.now()-state.shotTime<1200)return;
-  state.shots++;state.shotTime=performance.now();state.paused=false;state.shotPending=true;
+  const now=performance.now();if(!canFire(now))return;
+  state.shots++;state.shotTime=now;state.paused=false;state.shotPending=true;
+  if(state.manualAim){state.manualShotTaken=true;state.manualStatus=null;}
   $('step-title').textContent=source==='clap'?'Simulated clap confirmed.':'Foam shot confirmed.';
   $('step-detail').textContent='The microcontroller triggers the simulated flywheels and dart pusher.';
   $('mcu-message').textContent='Confirmed input → simulated firing output.';$('mcu-badge').textContent='FIRING';
   if(pitchGroup){
     pitchGroup.updateWorldMatrix(true,false);projectile.position.copy(localPoint(mountSpec.muzzleX,.31,0));projectile.quaternion.copy(pitchGroup.getWorldQuaternion(new THREE.Quaternion()));
-    parts.shotOrigin=projectile.position.clone();parts.shotEnd=selectedPoint();projectile.visible=true;
+    parts.shotOrigin=projectile.position.clone();parts.shotEnd=state.manualAim?localPoint(worldDistance(state.range),.31,0):selectedPoint();projectile.visible=true;
   }
 }
 function switchMode(mount,variant=state.mountVariant||'recommended'){
   history.replaceState(null,'',mount?'#'+variant:location.pathname+location.search);
-  state.mount=mount;state.mountVariant=variant;state.paused=false;state.actualExplode=0;state.actualYaw=0;state.actualPitch=0;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
+  state.mount=mount;state.mountVariant=variant;state.manualAim=false;state.manualStatus=null;state.manualShotTaken=false;state.paused=false;state.actualExplode=0;state.actualYaw=0;state.actualPitch=0;state.sweep=false;state.explode=0;state.selected=null;state.yaw=0;state.pitch=0;state.trimApplied=0;
   $('demo-controls').hidden=mount;$('mount-controls').hidden=!mount;$('mount-labels').hidden=!mount||state.wiring;$('target-labels').hidden=mount;$('walkthrough').hidden=mount;$('mount-footer').hidden=!mount;
   document.querySelector('.world-pane').classList.toggle('mount-mode',mount);
   const alternative=mount&&variant==='plywood',compact=mount&&variant==='compact',recommended=mount&&variant==='recommended';
@@ -521,7 +540,7 @@ feed.addEventListener('click',e=>{
   const pitch=state.actualPitch-THREE.MathUtils.radToDeg(Math.atan((y-feed.height/2)/cameraFocal));
   let nearest=-1,distance=Infinity;targets.forEach((t,i)=>{const d=Math.hypot(t.yaw-yaw,t.pitch-pitch);if(d<distance){distance=d;nearest=i;}});
   if(distance<8){pickTarget(nearest);return;}
-  state.selected='point';state.selectionPose={yaw:state.actualYaw,pitch:state.actualPitch};state.command={yaw:clamp(yaw,-60,60),pitch:clamp(pitch,-15,40)};
+  state.manualAim=false;state.manualStatus=null;state.selected='point';state.selectionPose={yaw:state.actualYaw,pitch:state.actualPitch};state.command={yaw:clamp(yaw,-60,60),pitch:clamp(pitch,-15,40)};
   state.pixelOffset={x:x-feed.width/2,y:y-feed.height/2};state.trimApplied=0;showPhase(1);
 });
 for(const button of document.querySelectorAll('[data-target]'))button.addEventListener('click',()=>pickTarget(Number(button.dataset.target)));
@@ -558,7 +577,7 @@ for(const [id,step]of [['previous-build',-1],['next-build',1]])$(id).addEventLis
 for(const build of ['plywood','compact','recommended'])for(const axis of ['yaw','pitch'])$(build+'-'+axis).addEventListener('input',e=>{state.sweep=false;state[axis]=Number(e.target.value);$('mount-sweep').textContent='↔ Move both axes';});
 for(const build of ['compact','recommended'])$(build+'-removed').addEventListener('change',e=>{state.compactRemoved=e.target.checked;resize();});
 $('iso-view').addEventListener('click',()=>setView());$('side-view').addEventListener('click',()=>setView(true));
-$('home').addEventListener('click',()=>{state.yaw=0;state.pitch=0;state.selected=null;state.sweep=false;state.explode=0;state.trimApplied=0;state.command=null;state.selectionPose={yaw:0,pitch:0};$('explode').value=0;$('explode-value').textContent='0%';$('mount-sweep').textContent='↔ Move both axes';showPhase(0);setView();});
+$('home').addEventListener('click',()=>{state.manualAim=false;state.manualStatus=null;state.manualShotTaken=false;state.yaw=0;state.pitch=0;state.selected=null;state.sweep=false;state.explode=0;state.trimApplied=0;state.command=null;state.selectionPose={yaw:0,pitch:0};$('explode').value=0;$('explode-value').textContent='0%';$('mount-sweep').textContent='↔ Move both axes';showPhase(0);setView();});
 $('explode').addEventListener('input',e=>{state.explode=Number(e.target.value)/100;$('explode-value').textContent=`${e.target.value}%`;});
 $('show-wiring').addEventListener('change',e=>{state.wiring=e.target.checked;$('wiring-key').hidden=!state.wiring;$('mount-labels').hidden=!state.mount||state.wiring;});
 $('mount-sweep').addEventListener('click',()=>{state.sweep=!state.sweep;$('mount-sweep').textContent=state.sweep?'Ⅱ Pause motion':'↔ Move both axes';});
@@ -567,7 +586,7 @@ feed.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pickT
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&!['INPUT','BUTTON','SUMMARY','SELECT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();fire();}});
 document.querySelector('.tabs').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();switchMode(!state.mount);$(state.mount?'mounts-tab':'demo-tab').focus();}});
 function sequence(dt){
-  if(state.mount||state.paused||state.phase===0)return;
+  if(state.mount||state.manualAim||state.paused||state.phase===0)return;
   state.phaseElapsed+=dt;const t=state.phaseElapsed;
   if(state.phase===6){const u=clamp(t/3.2,0,1);state.trimApplied=(state.trimTarget||0)*u*u*(3-2*u);}
   if(state.phase===1&&t>.8)showPhase(2);
@@ -594,11 +613,12 @@ function animate(now){
   for(const build of ['compact','plywood','recommended'])if(state.mount&&state.mountVariant===build)for(const axis of ['yaw','pitch']){$(build+'-'+axis).value=state[axis];$(build+'-'+axis+'-value').textContent=`${degrees(state['actual'+axis[0].toUpperCase()+axis.slice(1)])}°`;}
   state.actualYaw+=(state.yaw-state.actualYaw)*smooth;state.actualPitch+=(finalPitch()-state.actualPitch)*smooth;state.actualExplode+=(state.explode-state.actualExplode)*smooth;
   const aligned=isAligned(),firing=now-state.shotTime<1100;
+  updateManualStatus(aligned,firing,now);
   if(state.shotPending&&!firing){state.shotPending=false;if(!state.mount&&state.phase===6){$('mcu-badge').textContent='READY';$('mcu-message').textContent='Simulated shot complete. Waiting for another confirmation.';$('step-title').textContent='Foam shot complete.';$('step-detail').textContent='Choose another target, replay the steps, or confirm another simulated shot.';}}
   $('live-yaw').textContent=`${degrees(state.actualYaw)}°`;$('live-pitch').textContent=`${degrees(state.actualPitch)}°`;
   $('live-range').textContent=state.phase>=6?`${state.range.toFixed(1)}m`:state.phase===5&&state.phaseElapsed>1?`${state.range.toFixed(1)}m`:'—';
-  $('fire').disabled=state.mount||!state.ready||!aligned||firing;$('clap').disabled=$('fire').disabled;
-  $('scene-state').textContent=state.mount?'ASSEMBLY CONCEPT':firing?'SIMULATED SHOT':state.paused?'PAUSED':state.ready?'READY TO CONFIRM':['PICK A TARGET','TARGET SELECTED','CALCULATING','USB TRANSFER','CENTERING','READING RANGE','APPLYING TRIM'][state.phase];
+  $('fire').disabled=!canFire(now);$('clap').disabled=$('fire').disabled;
+  $('scene-state').textContent=state.mount?'ASSEMBLY CONCEPT':firing?'SIMULATED SHOT':state.paused?'PAUSED':state.ready?'READY TO CONFIRM':state.manualAim?'MANUAL AIM · MOVING':['PICK A TARGET','TARGET SELECTED','CALCULATING','USB TRANSFER','CENTERING','READING RANGE','APPLYING TRIM'][state.phase];
   const calc=state.phase===2?clamp(state.phaseElapsed/1.25,0,1):state.phase>2?1:0;
   $('delta-x').textContent=state.phase>=1&&state.pixelOffset?String(Math.round(state.pixelOffset.x)):'—';$('delta-y').textContent=state.phase>=1&&state.pixelOffset?String(Math.round(state.pixelOffset.y)):'—';
   $('computed-yaw').textContent=state.phase>=2&&state.command?`${(state.command.yaw*calc).toFixed(1)}°`:'—';$('computed-pitch').textContent=state.phase>=2&&state.command?`${(state.command.pitch*calc).toFixed(1)}°`:'—';
@@ -623,7 +643,7 @@ function animate(now){
     if(!state.mount&&state.phase===6)updateProjectedLabel($('trim-caption'),localPoint(2.7,1.4,0));
     parts.desiredLine.visible=hasTarget&&state.phase!==6;parts.sensorLine.visible=hasTarget&&state.phase===5;
     if(hasTarget){const target=selectedPoint();setLine(parts.desiredLine,muzzle,target);setLine(parts.sensorLine,localPoint(mountSpec.sensorX,mountSpec.sensorY,0),target);}
-    parts.pointTarget.visible=state.selected==='point';if(parts.pointTarget.visible)parts.pointTarget.position.copy(selectedPoint());
+    parts.pointTarget.visible=!state.mount&&(state.selected==='point'||state.manualAim);if(parts.pointTarget.visible)parts.pointTarget.position.copy(selectedPoint());
     for(const [i,target]of targetObjects.entries()){
       target.halo.visible=state.selected===i;
       const hit=firing&&state.selected===i&&now-state.shotTime>620;
